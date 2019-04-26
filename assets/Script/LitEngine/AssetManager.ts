@@ -18,14 +18,16 @@ export default class AssetManager {
             if (erro) {
                 cc.error(erro.message || erro);
             }
-            AssetManager.instance.RetainAsset(url);
+            if(resobj != null)
+                AssetManager.instance.RetainAsset(url);
             completeCallback(erro, resobj);
         });
     }
 
     public static async LoadAssetAsync(url: string, type: typeof cc.Asset = cc.Asset) {
         var tobj = await AssetManager.instance.GetResAsync(url, type);
-        AssetManager.instance.RetainAsset(url);
+        if(tobj != null)
+            AssetManager.instance.RetainAsset(url);
         return tobj;
     }
 
