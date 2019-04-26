@@ -22,15 +22,6 @@ export default class UIManager extends BaseManager {
             tui.parent = this.uiRoot;
             tui.setPosition(0, 0);
             this._uiList[uiName] = tui;
-            tui.destroy();
-            var tobj2 = await AssetManager.LoadAssetAsync(this._uiFolder + uiName);
-            AssetManager.ReleaseAsset(this._uiFolder + uiName);
-            tui = cc.instantiate(tobj);
-            tui.parent = this.uiRoot;
-            tui.setPosition(0, 0);
-            this._uiList[uiName] = tui;
-            
-            
         }
         else {
             this._uiList[uiName].active = true;
@@ -38,6 +29,17 @@ export default class UIManager extends BaseManager {
 
         return this._uiList[uiName];
 
+    }
+
+    public DestoryUI(uiName: string) {
+        if (this._uiList[uiName] != null) {
+            var tui = this._uiList[uiName];
+            tui.destroy();
+            var index = this._uiList.indexOf(tui);
+            if (index !== -1)
+                this._uiList.splice(index, 1);
+        }
+        AssetManager.ReleaseAsset(this._uiFolder + uiName);
     }
 
     public UpdateManager(dt: number) {
