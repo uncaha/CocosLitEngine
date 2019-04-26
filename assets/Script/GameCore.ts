@@ -1,5 +1,6 @@
 import UIManager from "./UI/UIManager";
 import BaseManager from "./Core/BaseManager";
+import AssetManager from "./LitEngine/AssetManager";
 //import AssetManager from "./LitEngine/AssetManager";
 
 // Learn TypeScript:

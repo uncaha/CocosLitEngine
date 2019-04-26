@@ -2,8 +2,8 @@ import AssetObject from "./AssetLoad/AssetObject"
 export default class AssetManager {
     private static _instance: AssetManager = null;
 
-    private assets:AssetObject[] = [];
-    private constructor(){
+    private assets: AssetObject[] = [];
+    private constructor() {
 
     }
 
@@ -18,23 +18,59 @@ export default class AssetManager {
             if (erro) {
                 cc.error(erro.message || erro);
             }
+            AssetManager.instance.RetainAsset(url);
             completeCallback(erro, resobj);
         });
     }
 
     public static async LoadAssetAsync(url: string, type: typeof cc.Asset = cc.Asset) {
         var tobj = await AssetManager.instance.GetResAsync(url, type);
-        if(!AssetManager.instance.assets.hasOwnProperty(url))
-        {
-            AssetManager.instance.assets[url] = new AssetObject(url);
-        }
-        AssetManager.instance.assets[url].retain();
-        cc.log(AssetManager.instance.assets[url]);
+        AssetManager.instance.RetainAsset(url);
         return tobj;
     }
 
-    private async GetResAsync(pfbname: string, type: typeof cc.Asset): Promise<cc.Node> {
-        return new Promise<cc.Node>(resolve => {
+    private RetainAsset(url: string) {
+
+        var deps = cc.loader.getDependsRecursively(url);
+
+        for (var i = 0; i < deps.length; ++i) {
+            var tuuid = deps[i].toString();
+            if (!AssetManager.instance.assets.hasOwnProperty(tuuid)) {
+                this.assets[tuuid] = new AssetObject(tuuid);
+            }
+            this.assets[deps[i]].retain();
+        }
+    }
+
+    public static ReleaseAsset(owner: string) {
+        AssetManager.instance.ReleaseAsset(owner);
+    }
+
+    private async ReleaseAsset(owner: string) {
+        var deps = cc.loader.getDependsRecursively(owner);
+        var reflist: string[] = [];
+        for (var i = 0; i < deps.length; ++i) {
+            var tuuid = deps[i].toString();
+            if (AssetManager.instance.assets.hasOwnProperty(tuuid)) {
+                var tobj = this.assets[tuuid];
+                tobj.Release();
+                if (tobj.assetUsedCount > 0) {
+                    reflist[i] = tuuid;
+                }
+            }
+        }
+        for (let i = 0; i < reflist.length; i++) {
+            var element = reflist[i];
+            var index = deps.indexOf(element);
+            if (index !== -1)
+                deps.splice(index, 1);
+
+        }
+        cc.loader.release(deps);
+    }
+
+    private async GetResAsync(pfbname: string, type: typeof cc.Asset): Promise<any> {
+        return new Promise<any>(resolve => {
             cc.loader.loadRes(pfbname, type, function (erro, resobj) {
                 if (erro) {
                     cc.error(erro.message || erro);

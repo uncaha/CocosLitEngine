@@ -22,6 +22,15 @@ export default class UIManager extends BaseManager {
             tui.parent = this.uiRoot;
             tui.setPosition(0, 0);
             this._uiList[uiName] = tui;
+            tui.destroy();
+            var tobj2 = await AssetManager.LoadAssetAsync(this._uiFolder + uiName);
+            AssetManager.ReleaseAsset(this._uiFolder + uiName);
+            tui = cc.instantiate(tobj);
+            tui.parent = this.uiRoot;
+            tui.setPosition(0, 0);
+            this._uiList[uiName] = tui;
+            
+            
         }
         else {
             this._uiList[uiName].active = true;

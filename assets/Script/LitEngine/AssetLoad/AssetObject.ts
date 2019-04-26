@@ -1,17 +1,27 @@
 export default class AssetObject{
-    public assetKey:string;
-    public assetUsedCount:number = 0;
+    private _assetKey:string;
+    private _assetUsedCount:number = 0;
     constructor(assetKey:string){
-        this.assetKey = assetKey;
+        this._assetKey = assetKey;
+    }
+
+    public get assetKey()
+    {
+        return this._assetKey;
+    }
+
+    public get assetUsedCount()
+    {
+        return this._assetUsedCount;
     }
 
     public retain()
     {
-        this.assetUsedCount += 1;
+        this._assetUsedCount += 1;
     }
 
     public Release()
     {
-        this.assetUsedCount -= 1;
+        this._assetUsedCount -= 1;
     }
 }
