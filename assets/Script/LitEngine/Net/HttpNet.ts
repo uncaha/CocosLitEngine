@@ -1,4 +1,4 @@
-export default class LitHttpRequest {
+export default class HttpNet {
     constructor() {
 
     }
@@ -38,20 +38,20 @@ export default class LitHttpRequest {
 
     public static async Send(url: string, completeCall: (erro: string, response: string) => void = null) {
         if (completeCall != null) {
-            LitHttpRequest.SendCallBack(url, function(erro: string, response: string){
+            HttpNet.SendCallBack(url, function(erro: string, response: string){
                 if (erro)
                     cc.error(erro);
                 completeCall(erro,response);
             });
         } else {
-            var tobj = await LitHttpRequest.GetUrlResponse(url);
+            var tobj = await HttpNet.GetUrlResponse(url);
             return tobj;
         }
     }
 
     private static async GetUrlResponse(url: string): Promise<any> {
         return new Promise<any>(resolve => {
-            LitHttpRequest.SendCallBack(url, function (erro: string, response: string) {
+            HttpNet.SendCallBack(url, function (erro: string, response: string) {
                 if (erro)
                     cc.error(erro);
                 resolve(response);

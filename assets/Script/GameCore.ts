@@ -1,7 +1,7 @@
 import UIManager from "./UI/UIManager";
 import BaseManager from "./Core/BaseManager";
 import AssetManager from "./LitEngine/AssetManager";
-import LitHttpRequest from "./LitEngine/LitHttpRequest";
+import LitHttpRequest from "./LitEngine/Net/HttpNet";
 //import AssetManager from "./LitEngine/AssetManager";
 
 // Learn TypeScript:
@@ -18,11 +18,10 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class GameCore extends cc.Component {
-
-    private static _core: GameCore;
-    private _managers: BaseManager[] = []
-
+    private static _core :GameCore = null;
+    private _managers : BaseManager[] = [];
     onLoad() {
+        if(GameCore._core) return;
         cc.game.addPersistRootNode(this.node);
         GameCore._core = this;
         this.Init();
@@ -31,24 +30,29 @@ export default class GameCore extends cc.Component {
     async Init() {
         this._managers["UIManager"] = new UIManager();
 
-        for (const key in this._managers) {
+        for (let key in this._managers) {
             if (this._managers.hasOwnProperty(key)) {
-                var element = this._managers[key];
+                let element = this._managers[key];
                 await element.Init();
             }
         }
-        await this._managers["UIManager"].ShowUI("HelloWorld");
+        await GameCore.GetMng("UIManager").ShowUI("HelloWorld");
 
-        var tresponse = await LitHttpRequest.Send("www.baidu.com");
-        cc.log(tresponse);
+       // var tresponse = await LitHttpRequest.Send("www.baidu.com");
+        //cc.log(tresponse);
     }
 
     update(dt) {
-        for (const key in this._managers) {
+        for (let key in this._managers) {
             if (this._managers.hasOwnProperty(key)) {
-                var element = this._managers[key];
+                let element = this._managers[key];
                 element.UpdateManager(dt);
             }
         }
+    }
+
+    public static GetMng(keyname:string)
+    {
+        return GameCore._core._managers[keyname];
     }
 }
