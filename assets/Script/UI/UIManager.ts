@@ -24,31 +24,33 @@ export default class UIManager extends BaseManager {
         return this._uiList[uiName];
     }
 
-    public ShowUICallBack(uiName: string, completeCallback: (uiComp: UIBase) => void | null) {
+    public async ShowUI(uiName: string, type: typeof cc.Asset = cc.Asset, completeCallback: (uiComp: UIBase) => void | null = null) {
         if (this._uiList[uiName] == null) {
-            var uim = this;
-            var assetName = this._uiFolder + uiName;
-            AssetManager.LoadAssetCallBack(assetName, cc.Asset, function (erro, resource) {
-                var tui = uim.CreatUI(resource, assetName);
-                if (completeCallback != null)
-                    completeCallback(tui);
+            if (completeCallback != null) {
+                var uim = this;
+                var assetName = this._uiFolder + uiName;
+                AssetManager.LoadAssetAsync(assetName, cc.Asset, function (erro, resource) {
+                    var tui = uim.CreatUI(resource, assetName);
+                    if (completeCallback != null)
+                        completeCallback(tui);
+                }
+                );
             }
-            );
-        }
-        else {
-            this._uiList[uiName].node.active = true;
-        }
-    }
-
-    public async ShowUI(uiName: string) {
-        if (this._uiList[uiName] == null) {
-            var tobj = await AssetManager.LoadAssetAsync(this._uiFolder + uiName);
-            this.CreatUI(tobj, uiName);
+            else {
+                var tobj = await AssetManager.LoadAssetAsync(this._uiFolder + uiName);
+                this.CreatUI(tobj, uiName);
+            }
         }
         else {
             this._uiList[uiName].node.active = true;
         }
         return this._uiList[uiName];
+    }
+
+    public HideUI(uiName: string) {
+        if (this._uiList[uiName] == null) return;
+        var tui = this._uiList[uiName];
+        tui.node.active = false;
     }
 
     public DestoryUI(uiName: string) {

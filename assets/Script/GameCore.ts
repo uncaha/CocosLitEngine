@@ -1,6 +1,7 @@
 import UIManager from "./UI/UIManager";
 import BaseManager from "./Core/BaseManager";
 import AssetManager from "./LitEngine/AssetManager";
+import LitHttpRequest from "./LitEngine/LitHttpRequest";
 //import AssetManager from "./LitEngine/AssetManager";
 
 // Learn TypeScript:
@@ -37,6 +38,10 @@ export default class GameCore extends cc.Component {
             }
         }
         await this._managers["UIManager"].ShowUI("HelloWorld");
+
+        LitHttpRequest.Send("www.baidu.com",function(erro,response){
+            cc.log(response)
+        });
     }
 
     update(dt) {

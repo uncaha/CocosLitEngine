@@ -13,22 +13,56 @@ export default class AssetManager {
         return AssetManager._instance;
     }
 
-    public static LoadAssetCallBack(url: string, type: typeof cc.Asset, completeCallback: ((error: Error, resource: any) => void) | null) {
-        cc.loader.loadRes(url, type, function (erro, resobj) {
-            if (erro) {
-                cc.error(erro.message || erro);
-            }
-            if(resobj != null)
-                AssetManager.instance.RetainAsset(url);
-            completeCallback(erro, resobj);
+    public static async LoadUrl(resources: string | string[] | { uuid?: string, url?: string, type?: string }, completeCallback: ((erro: Error, res: any) => void) | null = null) {
+        if (completeCallback != null) {
+            cc.loader.load(resources, function (err, resobj) {
+                if (err) {
+                    cc.error(err.message || err);
+                }
+                completeCallback(err, resobj);
+            });
+        }
+        else {
+            let ret = await AssetManager.instance.GetUrlRes(resources);
+
+            return ret;
+        }
+
+    }
+
+    private async GetUrlRes(resources: string|string[]|{uuid?: string, url?: string, type?: string}) : Promise<any>
+    {
+        return new Promise<any>(resolve=>{
+            cc.loader.load(resources, function (err, resobj) {
+                if (err) {
+                    cc.error(err.message || err);
+                }
+                resolve(resobj);
+            });
         });
     }
 
-    public static async LoadAssetAsync(url: string, type: typeof cc.Asset = cc.Asset) {
-        var tobj = await AssetManager.instance.GetResAsync(url, type);
-        if(tobj != null)
-            AssetManager.instance.RetainAsset(url);
-        return tobj;
+
+    public static async LoadAssetAsync(url: string, type: typeof cc.Asset = cc.Asset, completeCallback: ((error: Error, resource: any) => void) | null = null) {    
+        
+        if(completeCallback != null)
+        {
+            cc.loader.loadRes(url, type, function (erro, resobj) {
+                if (erro) {
+                    cc.error(erro.message || erro);
+                }
+                if(resobj != null)
+                    AssetManager.instance.RetainAsset(url);
+                completeCallback(erro, resobj);
+            });
+        }
+        else
+        {
+            var tobj = await AssetManager.instance.GetResAsync(url, type);
+            if(tobj != null)
+                AssetManager.instance.RetainAsset(url);
+            return tobj;
+        }
     }
 
     private RetainAsset(url: string) {
@@ -71,7 +105,7 @@ export default class AssetManager {
         cc.loader.release(deps);
     }
 
-    private async GetResAsync(pfbname: string, type: typeof cc.Asset): Promise<any> {
+    private async GetResAsync(pfbname: string, type: typeof cc.Asset = cc.Asset): Promise<any> {
         return new Promise<any>(resolve => {
             cc.loader.loadRes(pfbname, type, function (erro, resobj) {
                 if (erro) {
