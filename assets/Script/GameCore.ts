@@ -39,9 +39,8 @@ export default class GameCore extends cc.Component {
         }
         await this._managers["UIManager"].ShowUI("HelloWorld");
 
-        LitHttpRequest.Send("www.baidu.com",function(erro,response){
-            cc.log(response)
-        });
+        var tresponse = await LitHttpRequest.Send("www.baidu.com");
+        cc.log(tresponse);
     }
 
     update(dt) {
