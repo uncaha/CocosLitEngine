@@ -2,6 +2,8 @@ import UIManager from "./UI/UIManager";
 import BaseManager from "./Core/BaseManager";
 import AssetManager from "./LitEngine/AssetManager";
 import LitHttpRequest from "./LitEngine/Net/HttpNet";
+import WebSocketNet, { SocketNetState } from "./LitEngine/Net/WebSocketNet";
+import HttpNet from "./LitEngine/Net/HttpNet";
 //import AssetManager from "./LitEngine/AssetManager";
 
 // Learn TypeScript:
@@ -38,8 +40,22 @@ export default class GameCore extends cc.Component {
         }
         await GameCore.GetMng("UIManager").ShowUI("HelloWorld");
 
-       // var tresponse = await LitHttpRequest.Send("www.baidu.com");
-        //cc.log(tresponse);
+        // WebSocketNet.SetCallBack(function(sttate,event){
+        //     switch (sttate) {
+        //         case SocketNetState.Open:
+        //             break;
+        //         case SocketNetState.Message:
+        //             break;
+        //         case SocketNetState.Close:
+        //             break;
+        //         case SocketNetState.Error:
+        //             break;
+        //     }
+        //     cc.log(sttate + "|"+event.type);
+        // });
+        // WebSocketNet.Connect("ws://www.baidu.com");
+        var tresponse = await HttpNet.Send("www.baidu.com");
+        cc.log(tresponse);
     }
 
     update(dt) {

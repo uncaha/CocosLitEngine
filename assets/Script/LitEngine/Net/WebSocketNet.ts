@@ -1,5 +1,5 @@
 
-enum SocketNetState {
+export enum SocketNetState {
     Open = 1,
     Close,
     Message,
@@ -68,7 +68,7 @@ export default class WebSocketNet {
 
     private WsClose()
     {
-        if(this._ws.readyState <= 1)
+        if(this._ws != null && this._ws.readyState <= 1)
             this._ws.close();
         this.RestWs();
     }
@@ -82,35 +82,30 @@ export default class WebSocketNet {
             this._ws.onerror = null;
             this._ws.onclose = null;
             this._ws = null;
-            this._stateDelgate = null;
         }
     }
 
     private CreatWs(url: string) {
         this._ws = new WebSocket(url);
-        this._ws.onopen = this.OnOpen;
-        this._ws.onmessage = this.OnMessage;
-        this._ws.onerror = this.OnError;
-        this._ws.onclose = this.OnClose;
-    }
 
-    private OnOpen(event: Event) {
-        if (this._stateDelgate != null)
-            this._stateDelgate(SocketNetState.Open, event);
-    }
+        var tdelgate = this._stateDelgate;
+        this._ws.onopen = function (event) {
+            if (tdelgate != null)
+                tdelgate(SocketNetState.Open, event);
+        };
+        this._ws.onmessage = function (event) {
+            if (tdelgate != null)
+                tdelgate(SocketNetState.Message, event);
+        };
+        this._ws.onerror = function (event) {
+            if (tdelgate != null)
+                tdelgate(SocketNetState.Error, event);
+        };
+        this._ws.onclose = function (event) {
+            if (tdelgate != null)
+                tdelgate(SocketNetState.Close, event);
+        };
 
-    private OnMessage(event: Event) {
-        if (this._stateDelgate != null)
-            this._stateDelgate(SocketNetState.Message, event);
-    }
 
-    private OnError(event: Event) {
-        if (this._stateDelgate != null)
-            this._stateDelgate(SocketNetState.Error, event);
-    }
-
-    private OnClose(event: Event) {
-        if (this._stateDelgate != null)
-            this._stateDelgate(SocketNetState.Close, event);
     }
 }
