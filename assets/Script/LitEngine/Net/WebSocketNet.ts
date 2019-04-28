@@ -2,6 +2,7 @@
 enum SocketNetState {
     Open = 1,
     Close,
+    Message,
     Error,
 }
 export default class WebSocketNet {
@@ -9,7 +10,6 @@ export default class WebSocketNet {
 
     private _ws : WebSocket = null;
     private _stateDelgate : ((state:number,event:Event)=>void) = null;
-    private state:SocketNetState = SocketNetState.Close;
     constructor()
     {
 
@@ -66,7 +66,6 @@ export default class WebSocketNet {
         if(this._ws.readyState <= 1)
             this._ws.close();
         this.RestWs();
-        this.state = SocketNetState.Close;
     }
 
     private RestWs()
@@ -91,13 +90,13 @@ export default class WebSocketNet {
     }
 
     private OnOpen(event: Event) {
-        this.state = SocketNetState.Open;
         if (this._stateDelgate != null)
             this._stateDelgate(SocketNetState.Open, event);
     }
 
     private OnMessage(event: Event) {
-
+        if (this._stateDelgate != null)
+            this._stateDelgate(SocketNetState.Message, event);
     }
 
     private OnError(event: Event) {
@@ -106,7 +105,6 @@ export default class WebSocketNet {
     }
 
     private OnClose(event: Event) {
-        this.state = SocketNetState.Close;
         if (this._stateDelgate != null)
             this._stateDelgate(SocketNetState.Close, event);
     }
