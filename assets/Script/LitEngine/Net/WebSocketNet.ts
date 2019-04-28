@@ -22,11 +22,16 @@ export default class WebSocketNet {
         return WebSocketNet._instance;
     }
 
-    public static Connect(url:string,callBack:((state:number,event:Event)=>void) = null)
+    public static SetCallBack(callBack:((state:number,event:Event)=>void))
+    {
+        WebSocketNet.Instance._stateDelgate = callBack;
+    }
+
+
+    public static Connect(url:string)
     {
         if(WebSocketNet.Instance._ws != null && WebSocketNet.Instance._ws.readyState <= 1) return;
         WebSocketNet.Close();
-        WebSocketNet.Instance._stateDelgate = callBack;
         WebSocketNet.Instance.CreatWs(url);
     }
 
