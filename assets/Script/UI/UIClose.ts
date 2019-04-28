@@ -1,4 +1,5 @@
 import UIBase from "./UIBase";
+import EventManager from "../LitEngine/EventManager";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -32,7 +33,7 @@ export default class UIClose extends UIBase {
             break;
         }
 
-
+        EventManager.DispatchEvent("GameCoreEvent",[key]);
     }
 
     // update (dt) {}

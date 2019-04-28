@@ -6,47 +6,40 @@ export enum SocketNetState {
     Error,
 }
 export default class WebSocketNet {
-    private static _instance : WebSocketNet;
+    private static _instance: WebSocketNet;
 
-    private _ws : WebSocket = null;
-    private _stateDelgate : ((state:number,event:Event)=>void) = null;
-    constructor()
-    {
+    private _ws: WebSocket = null;
+    private _stateDelgate: ((state: number, event: Event) => void) = null;
+    constructor() {
 
     }
 
-    public static get Instance()
-    {
-        if(WebSocketNet._instance == null)
+    public static get Instance() {
+        if (WebSocketNet._instance == null)
             WebSocketNet._instance = new WebSocketNet();
         return WebSocketNet._instance;
     }
 
-    public static SetCallBack(callBack:((state:number,event:Event)=>void))
-    {
+    public static SetCallBack(callBack: ((state: number, event: Event) => void)) {
         WebSocketNet.Instance._stateDelgate = callBack;
     }
 
 
-    public static Connect(url:string)
-    {
-        if(WebSocketNet.Instance._ws != null && WebSocketNet.Instance._ws.readyState <= 1) return;
+    public static Connect(url: string) {
+        if (WebSocketNet.Instance._ws != null && WebSocketNet.Instance._ws.readyState <= 1) return;
         WebSocketNet.Close();
         WebSocketNet.Instance.CreatWs(url);
     }
 
-    public static Send(msg:string)
-    {
+    public static Send(msg: string) {
         WebSocketNet.Instance.WsSend(msg);
     }
 
-    public static Close()
-    {
+    public static Close() {
         WebSocketNet.Instance.WsClose();
     }
 
-    private WsSend(msg:string)
-    {
+    private WsSend(msg: string) {
         if (this._ws != null) {
             switch (this._ws.readyState) {
                 case WebSocket.OPEN:
@@ -66,17 +59,14 @@ export default class WebSocketNet {
         }
     }
 
-    private WsClose()
-    {
-        if(this._ws != null && this._ws.readyState <= 1)
+    private WsClose() {
+        if (this._ws != null && this._ws.readyState <= 1)
             this._ws.close();
         this.RestWs();
     }
 
-    private RestWs()
-    {
-        if(this._ws != null)
-        {
+    private RestWs() {
+        if (this._ws != null) {
             this._ws.onopen = null;
             this._ws.onmessage = null;
             this._ws.onerror = null;
@@ -105,7 +95,5 @@ export default class WebSocketNet {
             if (tdelgate != null)
                 tdelgate(SocketNetState.Close, event);
         };
-
-
     }
 }

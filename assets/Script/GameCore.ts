@@ -4,6 +4,7 @@ import AssetManager from "./LitEngine/AssetManager";
 import LitHttpRequest from "./LitEngine/Net/HttpNet";
 import WebSocketNet, { SocketNetState } from "./LitEngine/Net/WebSocketNet";
 import HttpNet from "./LitEngine/Net/HttpNet";
+import EventManager from "./LitEngine/EventManager";
 //import AssetManager from "./LitEngine/AssetManager";
 
 // Learn TypeScript:
@@ -22,6 +23,8 @@ const { ccclass, property } = cc._decorator;
 export default class GameCore extends cc.Component {
     private static _core :GameCore = null;
     private _managers : BaseManager[] = [];
+
+    private eventCall:any;
     onLoad() {
         if(GameCore._core) return;
         cc.game.addPersistRootNode(this.node);
@@ -54,9 +57,19 @@ export default class GameCore extends cc.Component {
         //     cc.log(sttate + "|"+event.type);
         // });
         // WebSocketNet.Connect("ws://www.baidu.com");
-        var tresponse = await HttpNet.Send("www.baidu.com");
-        cc.log(tresponse);
+        //var tresponse = await HttpNet.Send("www.baidu.com");
+        //cc.log(tresponse);
+        var tar = this;
+        this.eventCall = function(args:any[])
+        {
+            cc.log(tar,args[0]);
+        }
+        EventManager.RegEvent("GameCoreEvent",this.eventCall);
+        //EventManager.UnRegEvent("testgame",this.eventCall);
     }
+
+   
+
 
     update(dt) {
         for (let key in this._managers) {

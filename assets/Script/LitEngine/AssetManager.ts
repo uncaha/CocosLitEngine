@@ -85,7 +85,7 @@ export default class AssetManager {
                 var tobj = this.assets[tuuid];
                 tobj.Release();
                 if (tobj.assetUsedCount > 0) {
-                    reflist[i] = tuuid;
+                    reflist.push(tuuid)
                 }
             }
         }
