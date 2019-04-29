@@ -5,6 +5,8 @@ import LitHttpRequest from "./LitEngine/Net/HttpNet";
 import WebSocketNet, { SocketNetState } from "./LitEngine/Net/WebSocketNet";
 import HttpNet from "./LitEngine/Net/HttpNet";
 import EventManager from "./LitEngine/EventManager";
+import PlayerData from "./LitEngine/Data/PlayerData";
+import PlayerInfo from "./Player/PlayerInfo";
 //import AssetManager from "./LitEngine/AssetManager";
 
 // Learn TypeScript:
@@ -43,29 +45,16 @@ export default class GameCore extends cc.Component {
         }
         await GameCore.GetMng("UIManager").ShowUI("HelloWorld");
 
-        // WebSocketNet.SetCallBack(function(sttate,event){
-        //     switch (sttate) {
-        //         case SocketNetState.Open:
-        //             break;
-        //         case SocketNetState.Message:
-        //             break;
-        //         case SocketNetState.Close:
-        //             break;
-        //         case SocketNetState.Error:
-        //             break;
-        //     }
-        //     cc.log(sttate + "|"+event.type);
-        // });
-        // WebSocketNet.Connect("ws://www.baidu.com");
-        //var tresponse = await HttpNet.Send("www.baidu.com");
-        //cc.log(tresponse);
         var tar = this;
         this.eventCall = function(args:any[])
         {
             cc.log(tar,args[0]);
         }
         EventManager.RegEvent("GameCoreEvent",this.eventCall);
-        //EventManager.UnRegEvent("testgame",this.eventCall);
+        //EventManager.UnRegEvent("GameCoreEvent",this.eventCall);
+        
+        cc.log(JSON.stringify(PlayerInfo.Instance.data));
+       // PlayerInfo.Instance.Save();
     }
 
    
