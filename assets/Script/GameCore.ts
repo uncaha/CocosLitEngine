@@ -25,6 +25,9 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class GameCore extends cc.Component {
 
+    @property({type:cc.AudioClip})
+    audio:cc.AudioClip = null; 
+
     private static _core :GameCore = null;
     private _managers : BaseManager[] = [];
 
@@ -54,6 +57,8 @@ export default class GameCore extends cc.Component {
         }
         EventManager.RegEvent("GameCoreEvent",this.eventCall);
         //EventManager.UnRegEvent("GameCoreEvent",this.eventCall); 
+
+        AudioManager.playMusic(this.audio);
     }
 
    

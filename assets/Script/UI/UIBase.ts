@@ -33,7 +33,7 @@ export default class UIBase extends cc.Component {
     public play(event:any,index:number)
     {
         if(index >= this.audios.length) return;
-        AudioManager.playSound(this.audios[index]);
+        AudioManager.playMixerSound(this.audios[index]);
     }
 
     // update (dt) {}
