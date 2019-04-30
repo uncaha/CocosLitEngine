@@ -137,7 +137,7 @@ export default class AudioManager extends cc.Component {
 
     update(dt) {
 
-        let tisplayin = false
+        let tisplayin = false;
         if (this._isMixerSoundPlaying) {
             let tmaxCount = this._maxAudioSource;
             let tmixeraudios = this._mixerSources;
