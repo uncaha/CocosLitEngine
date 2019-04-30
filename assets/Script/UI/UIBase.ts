@@ -1,3 +1,5 @@
+import AudioManager from "../LitEngine/AudioManager";
+
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -12,7 +14,9 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class UIBase extends cc.Component {
-
+    @property({type:[cc.AudioClip]})
+    audios:cc.AudioClip[] = []; 
+    
     onLoad () {
 
     }
@@ -24,6 +28,12 @@ export default class UIBase extends cc.Component {
     public BtnCall(event:any,key:string)
     {
 
+    }
+
+    public play(event:any,index:number)
+    {
+        if(index >= this.audios.length) return;
+        AudioManager.playSound(this.audios[index]);
     }
 
     // update (dt) {}

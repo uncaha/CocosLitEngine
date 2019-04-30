@@ -7,6 +7,7 @@ import HttpNet from "./LitEngine/Net/HttpNet";
 import EventManager from "./LitEngine/EventManager";
 import PlayerData from "./LitEngine/Data/PlayerData";
 import PlayerInfo from "./Player/PlayerInfo";
+import AudioManager from "./LitEngine/AudioManager";
 //import AssetManager from "./LitEngine/AssetManager";
 
 // Learn TypeScript:
@@ -23,6 +24,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class GameCore extends cc.Component {
+
     private static _core :GameCore = null;
     private _managers : BaseManager[] = [];
 
@@ -51,10 +53,7 @@ export default class GameCore extends cc.Component {
             cc.log(tar,args[0]);
         }
         EventManager.RegEvent("GameCoreEvent",this.eventCall);
-        //EventManager.UnRegEvent("GameCoreEvent",this.eventCall);
-        
-        cc.log(JSON.stringify(PlayerInfo.Instance.data));
-       // PlayerInfo.Instance.Save();
+        //EventManager.UnRegEvent("GameCoreEvent",this.eventCall); 
     }
 
    
