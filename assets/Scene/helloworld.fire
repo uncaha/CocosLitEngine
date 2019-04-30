@@ -124,6 +124,11 @@
       "__id__": 2
     },
     "_enabled": true,
+    "audios": [
+      {
+        "__uuid__": "4d1cf418-6e2d-46e4-9a4e-ea4af512fb49"
+      }
+    ],
     "_id": "84zA77IRZLCJdpApJnNYuo"
   }
 ]
