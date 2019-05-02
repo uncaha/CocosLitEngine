@@ -1,6 +1,6 @@
-import AssetLoader from "./AssetLoader";
-import AudioManager from "./AudioManager";
-import EventManager from "./EventManager";
+import AssetLoader from "./AssetLoad/AssetLoader";
+import AudioManager from "./Audio/AudioManager";
+import EventManager from "./Event/EventManager";
 import PlayerData from "./Data/PlayerData";
 import HttpNet from "./Net/HttpNet";
 import WebSocketNet from "./Net/WebSocketNet";
@@ -12,4 +12,9 @@ export default class LitEngine{
     public static PlayerData = PlayerData;
     public static HttpNet = HttpNet;
     public static WebSocketNet = WebSocketNet;
+
+    private constructor()
+    {
+        
+    }
 }

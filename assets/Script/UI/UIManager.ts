@@ -1,12 +1,12 @@
 import BaseManager from "../Core/BaseManager";
-import AssetLoader from "../LitEngine/AssetLoader";
+import LitEngine from "../LitEngine/LitEngine";
 import UIBase from "./UIBase";
 export default class UIManager extends BaseManager {
     private _uiFolder: string = "Prefab/";
     private _uiList: UIBase[] = [];
     private _uiRoot: cc.Node;
     public async Init() {
-        var tobj = await AssetLoader.LoadAssetAsync(this._uiFolder + "RootNode");
+        var tobj = await LitEngine.AssetLoader.LoadAssetAsync(this._uiFolder + "RootNode");
         var toort = cc.instantiate(tobj);
         cc.game.addPersistRootNode(toort);
         this._uiRoot = toort;
@@ -29,7 +29,7 @@ export default class UIManager extends BaseManager {
             if (completeCallback != null) {
                 var uim = this;
                 var assetName = this._uiFolder + uiName;
-                AssetLoader.LoadAssetAsync(assetName, cc.Asset, function (erro, resource) {
+                LitEngine.AssetLoader.LoadAssetAsync(assetName, cc.Asset, function (erro, resource) {
                     var tui = uim.CreatUI(resource, assetName);
                     if (completeCallback != null)
                         completeCallback(tui);
@@ -37,7 +37,7 @@ export default class UIManager extends BaseManager {
                 );
             }
             else {
-                var tobj = await AssetLoader.LoadAssetAsync(this._uiFolder + uiName);
+                var tobj = await LitEngine.AssetLoader.LoadAssetAsync(this._uiFolder + uiName);
                 this.CreatUI(tobj, uiName);
             }
         }
@@ -61,7 +61,7 @@ export default class UIManager extends BaseManager {
             if (index !== -1)
                 this._uiList.splice(index, 1);
         }
-        AssetLoader.ReleaseAsset(this._uiFolder + uiName);
+        LitEngine.AssetLoader.ReleaseAsset(this._uiFolder + uiName);
     }
 
     public UpdateManager(dt: number) {
