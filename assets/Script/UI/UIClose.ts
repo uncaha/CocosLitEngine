@@ -1,6 +1,5 @@
 import UIBase from "./UIBase";
-import EventManager from "../LitEngine/EventManager";
-
+import LitEngine from "../LitEngine/LitEngine";
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -31,8 +30,7 @@ export default class UIClose extends UIBase {
             case "1":
             break;
         }
-
-        EventManager.DispatchEvent("GameCoreEvent",[key]);
+        LitEngine.EventManager.DispatchEvent("GameCoreEvent",[key]);
     }
 
     // update (dt) {}

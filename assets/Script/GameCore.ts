@@ -1,13 +1,8 @@
 import UIManager from "./UI/UIManager";
 import BaseManager from "./Core/BaseManager";
-import AssetLoader from "./LitEngine/AssetLoader";
-import LitHttpRequest from "./LitEngine/Net/HttpNet";
-import WebSocketNet, { SocketNetState } from "./LitEngine/Net/WebSocketNet";
-import HttpNet from "./LitEngine/Net/HttpNet";
-import EventManager from "./LitEngine/EventManager";
-import PlayerData from "./LitEngine/Data/PlayerData";
-import PlayerInfo from "./Player/PlayerInfo";
-import AudioManager from "./LitEngine/AudioManager";
+
+import LitEngine from "./LitEngine/LitEngine";
+
 //import AssetManager from "./LitEngine/AssetManager";
 
 // Learn TypeScript:
@@ -55,10 +50,12 @@ export default class GameCore extends cc.Component {
         {
             cc.log(tar,args[0]);
         }
-        EventManager.RegEvent("GameCoreEvent",this.eventCall);
-        //EventManager.UnRegEvent("GameCoreEvent",this.eventCall); 
+        LitEngine.EventManager.RegEvent("GameCoreEvent",this.eventCall);
+        //LitEngine.EventManager.UnRegEvent("GameCoreEvent",this.eventCall); 
 
-        AudioManager.playMusic(this.audio);
+
+        LitEngine.AudioManager.playMusic(this.audio);
+
     }
 
    
