@@ -1,6 +1,6 @@
 import UIManager from "./UI/UIManager";
 import BaseManager from "./Core/BaseManager";
-import AssetManager from "./LitEngine/AssetManager";
+import AssetLoader from "./LitEngine/AssetLoader";
 import LitHttpRequest from "./LitEngine/Net/HttpNet";
 import WebSocketNet, { SocketNetState } from "./LitEngine/Net/WebSocketNet";
 import HttpNet from "./LitEngine/Net/HttpNet";
