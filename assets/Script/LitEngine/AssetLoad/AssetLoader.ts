@@ -1,4 +1,4 @@
-import AssetObject from "./AssetLoad/AssetObject"
+import AssetObject from "./AssetObject"
 export default class AssetLoader {
     private static _instance: AssetLoader = null;
 

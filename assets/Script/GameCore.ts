@@ -2,6 +2,7 @@ import UIManager from "./UI/UIManager";
 import BaseManager from "./Core/BaseManager";
 
 import LitEngine from "./LitEngine/LitEngine";
+import UpdateManager, { UpdateStateType } from "./LitEngine/Update/UpdateManager";
 
 //import AssetManager from "./LitEngine/AssetManager";
 
@@ -20,6 +21,8 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class GameCore extends cc.Component {
 
+    @property({type:cc.Asset})
+    mainfiest:cc.Asset = null; 
     @property({type:cc.AudioClip})
     audio:cc.AudioClip = null; 
 
@@ -56,10 +59,42 @@ export default class GameCore extends cc.Component {
 
         LitEngine.AudioManager.playMusic(this.audio);
 
+
+        if (cc.sys.isNative) {
+            LitEngine.UpdateManager.SetManifest(this.mainfiest);
+           
+            LitEngine.UpdateManager.isNeedUpdate(function(state,msg){
+                switch (state) {
+                    case UpdateStateType.newVersion:
+                        LitEngine.UpdateManager.StartUpdate(function(st,progressobj,err){
+                            switch(st)
+                            {
+                                case UpdateStateType.updateing:
+                                cc.log("ddd--"+progressobj.msg);
+                                break;
+                                default:
+                                cc.log(st + "|"+err);
+                                break;
+                            }
+                            
+                        });
+                        break;
+                    case UpdateStateType.already:
+                        break;
+                    case UpdateStateType.checkFailed:
+                        break;
+                }
+                cc.log(state + "|"+msg);
+            });
+        }
+       // cc.log(jsb.EventAssetsManager.ERROR_NO_LOCAL_MANIFEST);
+       // var searchPaths = jsb.fileUtils.getSearchPaths();
+        //cc.log(searchPaths);
+        // var storagePath = (jsb.fileUtils ? jsb.fileUtils.getWritablePath() : "/") + "blackjack-remote-asset";
+        // cc.log("Storage path for remote asset : " + storagePath);
+        // var _am = new jsb.AssetsManager("", storagePath);
+        
     }
-
-   
-
 
     update(dt) {
         for (let key in this._managers) {

@@ -4,6 +4,7 @@ import EventManager from "./Event/EventManager";
 import PlayerData from "./Data/PlayerData";
 import HttpNet from "./Net/HttpNet";
 import WebSocketNet from "./Net/WebSocketNet";
+import UpdateManager from "./Update/UpdateManager";
 
 export default class LitEngine{
     public static AssetLoader = AssetLoader;
@@ -12,6 +13,7 @@ export default class LitEngine{
     public static PlayerData = PlayerData;
     public static HttpNet = HttpNet;
     public static WebSocketNet = WebSocketNet;
+    public static UpdateManager = UpdateManager;
 
     private constructor()
     {
