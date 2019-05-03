@@ -1,4 +1,4 @@
-import AudioManager from "../LitEngine/AudioManager";
+import AudioManager from "../LitEngine/Audio/AudioManager";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
