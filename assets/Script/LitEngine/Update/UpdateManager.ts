@@ -54,9 +54,9 @@ export default class UpdateManager extends cc.Component {
     private _updateListener: any;
 
     private _updateState: UpdateStateType = UpdateStateType.none;
-    private checkUpdateCallback: ((versionState: UpdateStateType, err: string) => void);
+    private checkUpdateCallback: ((arr:{ state: UpdateStateType,code?:number, msg?: string})=>void);
 
-    private updateCallback: ((state: UpdateStateType, updateObj?: UpdateProgress, err?: string) => void);
+    private updateCallback: ((arr:{ state: UpdateStateType,updateObj?: UpdateProgress,code?:number, msg?: string})=>void);
     private _upProgress: UpdateProgress;
 
     private static _instance: UpdateManager = null;
@@ -74,12 +74,17 @@ export default class UpdateManager extends cc.Component {
         UpdateManager.instance.manifestUrl = mf;
     }
 
-    public static isNeedUpdate(cb: ((versionState: UpdateStateType, err: string) => void)) {
+    public static isNeedUpdate(cb: ((arr:{ state: UpdateStateType,code?:number, msg?: string})=>void)) {
         UpdateManager.instance.checkUpdate(cb);
     }
 
-    public static StartUpdate(ucb: ((state: UpdateStateType, updateObj: UpdateProgress, err?: string) => void)) {
+    public static StartUpdate(ucb:((arr:{ state: UpdateStateType,updateObj?: UpdateProgress,code?:number, msg?: string})=>void)) {
         UpdateManager.instance.startUpdate(ucb);
+    }
+
+    public GetState()
+    {
+        return this._updateState;
     }
 
     public static Destory()
@@ -159,32 +164,33 @@ export default class UpdateManager extends cc.Component {
             // Some Android device may slow down the download process when concurrent tasks is too much.
             // The value may not be accurate, please do more test and find what's most suitable for your game.
             this._am.setMaxConcurrentTask(2);
-            infostr = "Max concurrent tasks count have been limited to 2";
+            this._am
         }
 
         this._upProgress = new UpdateProgress();
     }
 
     checkCb(event) {
-        var msg;
+        var tmsg;
+        var tcode = event.getEventCode();
         //cc.log('Code: ' + event.getEventCode());
-        switch (event.getEventCode()) {
+        switch (tcode) {
             case jsb.EventAssetsManager.ERROR_NO_LOCAL_MANIFEST:
                 this._updateState = UpdateStateType.checkFailed;
-                msg = "No local manifest file found, hot update skipped.";
+                tmsg = "No local manifest file found, hot update skipped.";
                 break;
             case jsb.EventAssetsManager.ERROR_DOWNLOAD_MANIFEST:
             case jsb.EventAssetsManager.ERROR_PARSE_MANIFEST:
                 this._updateState = UpdateStateType.checkFailed;
-                msg = "Fail to download manifest file, hot update skipped.";
+                tmsg = "Fail to download manifest file, hot update skipped.";
                 break;
             case jsb.EventAssetsManager.ALREADY_UP_TO_DATE:
                 this._updateState = UpdateStateType.already;
-                msg = "Already up to date with the latest remote version.";
+                tmsg = "Already up to date with the latest remote version.";
                 break;
             case jsb.EventAssetsManager.NEW_VERSION_FOUND:
                 this._updateState = UpdateStateType.newVersion;
-                msg = 'New version found, please try to update.';
+                tmsg = 'New version found, please try to update.';
                 break;
             default:
                 return;
@@ -192,7 +198,7 @@ export default class UpdateManager extends cc.Component {
 
         this._am.setEventCallback(null);
         if (this.checkUpdateCallback)
-            this.checkUpdateCallback(this._updateState, msg);
+            this.checkUpdateCallback({state: this._updateState, msg:tmsg,code:tcode});
     }
 
 
@@ -200,7 +206,8 @@ export default class UpdateManager extends cc.Component {
         var needRestart = false;
         var failed = false;
         var infoStr: string;
-        switch (event.getEventCode()) {
+        var tcode = event.getEventCode();
+        switch (tcode) {
             case jsb.EventAssetsManager.ERROR_NO_LOCAL_MANIFEST:
                 infoStr = 'No local manifest file found, hot update skipped.';
                 this._updateState = UpdateStateType.updateFailed;
@@ -208,7 +215,7 @@ export default class UpdateManager extends cc.Component {
                 break;
             case jsb.EventAssetsManager.UPDATE_PROGRESSION:
                 this._upProgress.SetProgress(event);
-                this.updateCallback(UpdateStateType.updateing, this._upProgress);
+                this.updateCallback({state:UpdateStateType.updateing,updateObj:this._upProgress,code:tcode});
                 break;
             case jsb.EventAssetsManager.ERROR_DOWNLOAD_MANIFEST:
             case jsb.EventAssetsManager.ERROR_PARSE_MANIFEST:
@@ -249,7 +256,7 @@ export default class UpdateManager extends cc.Component {
         if (failed) {
             this._am.setEventCallback(null);
             this._updateListener = null;
-            this.updateCallback(this._updateState);
+            this.updateCallback({state:this._updateState,code:tcode,msg:infoStr});
         }
 
         if (needRestart) {
@@ -266,8 +273,7 @@ export default class UpdateManager extends cc.Component {
             cc.sys.localStorage.setItem('HotUpdateSearchPaths', JSON.stringify(searchPaths));
             //console.log(JSON.stringify(searchPaths));
             jsb.fileUtils.setSearchPaths(searchPaths);
-
-            this.updateCallback(UpdateStateType.updateFinished);
+            this.updateCallback({state:this._updateState,code:tcode});
             //cc.audioEngine.stopAll();
             //cc.game.restart();
 
@@ -287,9 +293,9 @@ export default class UpdateManager extends cc.Component {
         }
     }
 
-    checkUpdate(cb: ((versionState: UpdateStateType, err: string) => void)) {
+    checkUpdate(cb: ((arr:{ state: UpdateStateType,code?:number, msg?: string})=>void)) {
         if (this._updateState >= UpdateStateType.checking) {
-            cb(this._updateState, 'checked.');
+            cb({state :this._updateState,msg: 'checked.',code:UpdateStateType.none});
             return;
         }
 
@@ -303,7 +309,7 @@ export default class UpdateManager extends cc.Component {
         }
 
         if (!this._am.getLocalManifest() || !this._am.getLocalManifest().isLoaded()) {
-            cb(UpdateStateType.checkFailed, 'Failed to load local manifest ...');
+            cb({state :UpdateStateType.checkFailed,msg: 'Failed to load local manifest ...',code:UpdateStateType.none});
             return;
         }
 
@@ -313,7 +319,7 @@ export default class UpdateManager extends cc.Component {
         this._updateState = UpdateStateType.checking;
     }
 
-    startUpdate(ucb: ((state: UpdateStateType, updateObj: UpdateProgress, err?: string) => void)) {
+    startUpdate(ucb:((arr:{ state: UpdateStateType,updateObj?: UpdateProgress,code?:number, msg?: string})=>void)) {
         if (this._updateState > UpdateStateType.newVersion || this._updateState < UpdateStateType.updateFailed) return;
 
         if (this._am) {

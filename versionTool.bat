@@ -1,1 +1,1 @@
-node version_generator.js -v 1.0.0 -u 127.0.0.1:3000/updatetest/ -s build/jsb-link/ -d assets/
+node version_generator.js -v 1.0.0 -u http://192.168.3.33:3000/updatetest/ -s build/jsb-link/ -d assets/
