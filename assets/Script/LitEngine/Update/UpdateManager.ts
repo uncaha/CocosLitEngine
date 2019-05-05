@@ -109,7 +109,7 @@ export default class UpdateManager extends cc.Component {
         // if the return value equals 0, versionA equals to B,
         // if the return value smaller than 0, versionA is smaller than B.
         this.versionCompareHandle = function (versionA, versionB) {
-            cc.log("local version is " + versionA + ', server version is ' + versionB);
+            console.log("local version is " + versionA + ', server version is ' + versionB);
             var vA = versionA.split('.');
             var vB = versionB.split('.');
             for (var i = 0; i < vA.length; ++i) {
@@ -132,8 +132,6 @@ export default class UpdateManager extends cc.Component {
 
         // Init with empty manifest url for testing custom manifest
         this._am = new jsb.AssetsManager('', this._storagePath, this.versionCompareHandle);
-
-
         // Setup the verification callback, but we don't have md5 check function yet, so only print some message
         // Return true if the verification passed, otherwise return false
         this._am.setVerifyCallback(function (path, asset) {
@@ -157,14 +155,10 @@ export default class UpdateManager extends cc.Component {
             return true;
         });
 
-        var infostr;
-        infostr = 'Hot update is ready, please check or directly update.';
-
         if (cc.sys.os === cc.sys.OS_ANDROID) {
             // Some Android device may slow down the download process when concurrent tasks is too much.
             // The value may not be accurate, please do more test and find what's most suitable for your game.
             this._am.setMaxConcurrentTask(2);
-            this._am
         }
 
         this._upProgress = new UpdateProgress();
@@ -298,7 +292,6 @@ export default class UpdateManager extends cc.Component {
             cb({ state: this._updateState, msg: 'checked.', code: UpdateStateType.none });
             return;
         }
-
         if (this._am.getState() === jsb.AssetsManager.State.UNINITED) {
             // Resolve md5 url
             var url = this.manifestUrl.nativeUrl;
@@ -307,12 +300,12 @@ export default class UpdateManager extends cc.Component {
             }
             this._am.loadLocalManifest(url);
         }
-
+        
         if (!this._am.getLocalManifest() || !this._am.getLocalManifest().isLoaded()) {
             cb({ state: UpdateStateType.checkFailed, msg: 'Failed to load local manifest ...', code: UpdateStateType.none });
             return;
         }
-
+        
         this.checkUpdateCallback = cb;
         this._am.setEventCallback(this.checkCb.bind(this));
         this._am.checkUpdate();

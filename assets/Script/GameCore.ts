@@ -1,9 +1,8 @@
 import UIManager from "./UI/UIManager";
 import BaseManager from "./Core/BaseManager";
 
-import LitEngine from "./LitEngine/LitEngine";
+import LE from "./LitEngine/LE";
 
-//import AssetManager from "./LitEngine/AssetManager";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -20,17 +19,17 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class GameCore extends cc.Component {
 
-    @property({type:cc.RawAsset})
-    mainfiest:cc.RawAsset = null; 
-    @property({type:cc.AudioClip})
-    audio:cc.AudioClip = null; 
+    @property({ type: cc.Asset })
+    mainfiest: cc.Asset = null;
+    @property({ type: cc.AudioClip })
+    audio: cc.AudioClip = null;
 
-    private static _core :GameCore = null;
-    private _managers : BaseManager[] = [];
+    private static _core: GameCore = null;
+    private _managers: BaseManager[] = [];
 
-    private eventCall:any;
+    private eventCall: any;
     onLoad() {
-        if(GameCore._core) return;
+        if (GameCore._core) return;
         cc.game.addPersistRootNode(this.node);
         GameCore._core = this;
         this.Init();
@@ -48,56 +47,54 @@ export default class GameCore extends cc.Component {
         await GameCore.GetMng("UIManager").ShowUI("HelloWorld");
 
         var tar = this;
-        this.eventCall = function(args:any[])
-        {
-            cc.log(tar,args[0]);
+        this.eventCall = function (args: any[]) {
+            cc.log(tar, args[0]);
         }
-        LitEngine.EventManager.RegEvent("GameCoreEvent",this.eventCall);
+        LE.EventManager.RegEvent("GameCoreEvent", this.eventCall);
         //LitEngine.EventManager.UnRegEvent("GameCoreEvent",this.eventCall); 
 
 
-        LitEngine.AudioManager.playMusic(this.audio);
+        LE.AudioManager.playMusic(this.audio);
 
         // console.log(jsb.fileUtils.getSearchPaths());
         // console.log(jsb.fileUtils.getWritablePath());
         if (cc.sys.isNative) {
-            LitEngine.UpdateManager.SetManifest(this.mainfiest);
-           
-            LitEngine.UpdateManager.isNeedUpdate(function(arr){
+            LE.UpdateManager.SetManifest(this.mainfiest);
+
+            LE.UpdateManager.isNeedUpdate(function (arr) {
                 switch (arr.state) {
-                    case LitEngine.UpdateManager.UpdateStateType.newVersion:
-                        LitEngine.UpdateManager.StartUpdate(function(arr){
-                            switch(arr.code)
-                            {
+                    case LE.UpdateManager.UpdateStateType.newVersion:
+                        LE.UpdateManager.StartUpdate(function (arr) {
+                            switch (arr.code) {
                                 case jsb.EventAssetsManager.UPDATE_PROGRESSION:
-                                console.log("ddd--"+arr.updateObj.byteProgress);
-                                break;
+                                    console.log("ddd--" + arr.updateObj.byteProgress);
+                                    break;
                                 case jsb.EventAssetsManager.UPDATE_FINISHED:
                                     cc.audioEngine.stopAll();
                                     cc.game.restart();
-                                break;
+                                    break;
                                 default:
-                                console.log(arr.state +"|" + arr.code + "|"+arr.msg);
-                                break;
+                                    console.log(arr.state + "|" + arr.code + "|" + arr.msg);
+                                    break;
                             }
-                            
+
                         });
                         break;
-                    case LitEngine.UpdateManager.UpdateStateType.already:
+                    case LE.UpdateManager.UpdateStateType.already:
                         break;
-                    case LitEngine.UpdateManager.UpdateStateType.checkFailed:
+                    case LE.UpdateManager.UpdateStateType.checkFailed:
                         break;
                 }
-                console.log(arr.state + "|"+arr.msg);
+                console.log(arr.state + "|" + arr.msg);
             });
         }
-       // cc.log(jsb.EventAssetsManager.ERROR_NO_LOCAL_MANIFEST);
-       // var searchPaths = jsb.fileUtils.getSearchPaths();
+        // cc.log(jsb.EventAssetsManager.ERROR_NO_LOCAL_MANIFEST);
+        // var searchPaths = jsb.fileUtils.getSearchPaths();
         //cc.log(searchPaths);
         // var storagePath = (jsb.fileUtils ? jsb.fileUtils.getWritablePath() : "/") + "blackjack-remote-asset";
         // cc.log("Storage path for remote asset : " + storagePath);
         // var _am = new jsb.AssetsManager("", storagePath);
-        
+
     }
 
     update(dt) {
@@ -109,8 +106,7 @@ export default class GameCore extends cc.Component {
         }
     }
 
-    public static GetMng(keyname:string)
-    {
+    public static GetMng(keyname: string) {
         return GameCore._core._managers[keyname];
     }
 }

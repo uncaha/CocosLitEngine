@@ -6,7 +6,7 @@ import HttpNet from "./Net/HttpNet";
 import WebSocketNet from "./Net/WebSocketNet";
 import UpdateManager from "./Update/UpdateManager";
 
-export default class LitEngine{
+export default class LE{
     public static AssetLoader = AssetLoader;
     public static AudioManager = AudioManager;
     public static EventManager = EventManager;
