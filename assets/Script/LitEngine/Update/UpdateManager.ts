@@ -45,6 +45,8 @@ export class UpdateProgress {
 @ccclass
 export default class UpdateManager extends cc.Component {
 
+    public static UpdateProgress = UpdateProgress;
+    public static UpdateStateType = UpdateStateType;
 
     private manifestUrl: cc.Asset = null;
 

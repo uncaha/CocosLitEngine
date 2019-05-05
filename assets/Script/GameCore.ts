@@ -2,7 +2,6 @@ import UIManager from "./UI/UIManager";
 import BaseManager from "./Core/BaseManager";
 
 import LitEngine from "./LitEngine/LitEngine";
-import UpdateManager, { UpdateStateType } from "./LitEngine/Update/UpdateManager";
 
 //import AssetManager from "./LitEngine/AssetManager";
 
@@ -61,37 +60,37 @@ export default class GameCore extends cc.Component {
 
         // console.log(jsb.fileUtils.getSearchPaths());
         // console.log(jsb.fileUtils.getWritablePath());
-        // if (cc.sys.isNative) {
-        //     LitEngine.UpdateManager.SetManifest(this.mainfiest);
+        if (cc.sys.isNative) {
+            LitEngine.UpdateManager.SetManifest(this.mainfiest);
            
-        //     LitEngine.UpdateManager.isNeedUpdate(function(arr){
-        //         switch (arr.state) {
-        //             case UpdateStateType.newVersion:
-        //                 LitEngine.UpdateManager.StartUpdate(function(arr){
-        //                     switch(arr.code)
-        //                     {
-        //                         case jsb.EventAssetsManager.UPDATE_PROGRESSION:
-        //                         console.log("ddd--"+arr.updateObj.byteProgress);
-        //                         break;
-        //                         case jsb.EventAssetsManager.UPDATE_FINISHED:
-        //                             cc.audioEngine.stopAll();
-        //                             cc.game.restart();
-        //                         break;
-        //                         default:
-        //                         console.log(arr.state +"|" + arr.code + "|"+arr.msg);
-        //                         break;
-        //                     }
+            LitEngine.UpdateManager.isNeedUpdate(function(arr){
+                switch (arr.state) {
+                    case LitEngine.UpdateManager.UpdateStateType.newVersion:
+                        LitEngine.UpdateManager.StartUpdate(function(arr){
+                            switch(arr.code)
+                            {
+                                case jsb.EventAssetsManager.UPDATE_PROGRESSION:
+                                console.log("ddd--"+arr.updateObj.byteProgress);
+                                break;
+                                case jsb.EventAssetsManager.UPDATE_FINISHED:
+                                    cc.audioEngine.stopAll();
+                                    cc.game.restart();
+                                break;
+                                default:
+                                console.log(arr.state +"|" + arr.code + "|"+arr.msg);
+                                break;
+                            }
                             
-        //                 });
-        //                 break;
-        //             case UpdateStateType.already:
-        //                 break;
-        //             case UpdateStateType.checkFailed:
-        //                 break;
-        //         }
-        //         console.log(arr.state + "|"+arr.msg);
-        //     });
-        // }
+                        });
+                        break;
+                    case LitEngine.UpdateManager.UpdateStateType.already:
+                        break;
+                    case LitEngine.UpdateManager.UpdateStateType.checkFailed:
+                        break;
+                }
+                console.log(arr.state + "|"+arr.msg);
+            });
+        }
        // cc.log(jsb.EventAssetsManager.ERROR_NO_LOCAL_MANIFEST);
        // var searchPaths = jsb.fileUtils.getSearchPaths();
         //cc.log(searchPaths);
