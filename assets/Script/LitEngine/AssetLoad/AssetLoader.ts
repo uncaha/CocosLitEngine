@@ -9,7 +9,7 @@ export default class AssetLoader {
 
     public static get instance() {
         if (AssetLoader._instance == null)
-        AssetLoader._instance = new AssetLoader();
+            AssetLoader._instance = new AssetLoader();
         return AssetLoader._instance;
     }
 
@@ -28,6 +28,9 @@ export default class AssetLoader {
     private async GetUrlRes(resources: string | string[] | { uuid?: string, url?: string, type?: string }): Promise<any> {
         return new Promise<any>(resolve => {
             AssetLoader.instance.GetUrlObject(resources, function (err, resobj) {
+                if (err) {
+                    cc.error(err.message || err);
+                }
                 resolve(resobj);
             });
         });
@@ -47,14 +50,14 @@ export default class AssetLoader {
         if (completeCallback != null) {
             AssetLoader.instance.GetAssetResObject(url, type, function (erro, resobj) {
                 if (resobj != null)
-                AssetLoader.instance.RetainAsset(url);
+                    AssetLoader.instance.RetainAsset(url);
                 completeCallback(erro, resobj);
             });
         }
         else {
             var tobj = await AssetLoader.instance.GetPromiseAsync(url, type);
             if (tobj != null)
-            AssetLoader.instance.RetainAsset(url);
+                AssetLoader.instance.RetainAsset(url);
             return tobj;
         }
     }
@@ -102,6 +105,9 @@ export default class AssetLoader {
     private async GetPromiseAsync(url: string, type: typeof cc.Asset = cc.Asset): Promise<any> {
         return new Promise<any>(resolve => {
             AssetLoader.instance.GetAssetResObject(url, type, function (erro, resobj) {
+                if (erro) {
+                    cc.error(erro.message || erro);
+                }
                 resolve(resobj);
             });
         });
