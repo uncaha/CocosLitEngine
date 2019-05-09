@@ -29,10 +29,13 @@ export default class UIManager extends BaseManager {
             if (completeCallback != null) {
                 var uim = this;
                 var assetName = this._uiFolder + uiName;
-                LE.AssetLoader.LoadAssetAsync(assetName, cc.Asset, function (erro, resource) {
-                    var tui = uim.CreatUI(resource, assetName);
-                    if (completeCallback != null)
-                        completeCallback(tui);
+                LE.AssetLoader.LoadAssetAsync(assetName, type, function (erro, resource) {
+                    if(erro == null)
+                    {
+                        var tui = uim.CreatUI(resource, assetName);
+                        if (completeCallback != null)
+                            completeCallback(tui);
+                    } 
                 }
                 );
             }
@@ -65,6 +68,5 @@ export default class UIManager extends BaseManager {
     }
 
     public UpdateManager(dt: number) {
-
     }
 }
