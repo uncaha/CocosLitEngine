@@ -2,13 +2,13 @@ import StateBase from "./StateBase";
 import GameCore from "../GameCore";
 
 export default class MainState extends StateBase {
-    constructor()  {
+    constructor() {
         super("MainState");
     }
-    public OnEnter(fun: Laya.Handler)  {
+    public OnEnter(fun: Laya.Handler) {
         super.OnEnter(fun);
 
-        GameCore.mgrUI.ShowUI("UIMain",Laya.Handler.create(this,function(){
+        GameCore.mgrUI.ShowUI("UIMain", Laya.Handler.create(this, function () {
             this.OnLoaded();
         }));
     }
@@ -18,12 +18,8 @@ export default class MainState extends StateBase {
         super.OnExit();
     }
 
-    protected OnLoaded()
-    {
+    protected OnLoaded()  {
         super.OnLoaded();
     }
 
-    public Update(dt: number) {
-
-    }
 }

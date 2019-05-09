@@ -1,4 +1,4 @@
-export default class BaseScene {
+export default abstract  class BaseScene implements IDispose {
     protected _sceneUrl: string;
     public get SceeneUrl() {
         return this._sceneUrl;
@@ -35,7 +35,6 @@ export default class BaseScene {
     }
 
     public Destroy()  {
-        Laya.loader.clearUnLoaded();
         if (this._loading)  {
             console.error(this._sceneUrl + " 加载中.此时释放可能会造成内存泄漏.");
         }

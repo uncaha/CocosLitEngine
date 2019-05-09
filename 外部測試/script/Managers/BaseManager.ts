@@ -1,4 +1,4 @@
-export default class BaseManager{
+export default abstract  class BaseManager{
     public static Creat():BaseManager {
         return null;
     }

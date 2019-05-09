@@ -1,15 +1,14 @@
 
-
-
 export enum StateType {
     none = 0,
     onEnter,
     onExit,
     onNormal,
 }
-export default class StateBase {
+export default abstract class StateBase implements IUpdate {
     public readonly name: string;
     protected _state: StateType = StateType.none;
+    protected _module : GameModuleBase;
     protected _onLoaded: Laya.Handler;
     public get State()  {
         return this._state;
@@ -23,6 +22,9 @@ export default class StateBase {
     }
 
     public OnExit() {
+        var tmodule = this._module;
+        if (tmodule != null)
+            tmodule.Destroy();
         this._state = StateType.onExit;
     }
 
@@ -33,10 +35,14 @@ export default class StateBase {
     }
 
     public Update(dt: number) {
-
+        var tmodule = this._module;
+        if(tmodule != null)
+            tmodule.Update(dt);
     }
 
     public UpdateData() {
-
+        var tmodule = this._module;
+        if(tmodule != null)
+            tmodule.UpdateData();
     }
 }
