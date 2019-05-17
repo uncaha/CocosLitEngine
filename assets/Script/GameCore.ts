@@ -52,42 +52,40 @@ export default class GameCore extends cc.Component {
         }
         LE.EventManager.RegEvent("GameCoreEvent", this.eventCall);
         //LitEngine.EventManager.UnRegEvent("GameCoreEvent",this.eventCall); 
-
+        
 
         LE.AudioManager.playMusic(this.audio);
 
-        // console.log(jsb.fileUtils.getSearchPaths());
-        // console.log(jsb.fileUtils.getWritablePath());
-        if (cc.sys.isNative) {
-            LE.UpdateManager.SetManifest(this.mainfiest);
+        // if (cc.sys.isNative) {
+        //     LE.UpdateManager.SetManifest(this.mainfiest);
 
-            LE.UpdateManager.isNeedUpdate(function (arr) {
-                switch (arr.state) {
-                    case LE.UpdateManager.UpdateStateType.newVersion:
-                        LE.UpdateManager.StartUpdate(function (arr) {
-                            switch (arr.code) {
-                                case jsb.EventAssetsManager.UPDATE_PROGRESSION:
-                                    console.log("ddd--" + arr.updateObj.byteProgress);
-                                    break;
-                                case jsb.EventAssetsManager.UPDATE_FINISHED:
-                                    cc.audioEngine.stopAll();
-                                    cc.game.restart();
-                                    break;
-                                default:
-                                    console.log(arr.state + "|" + arr.code + "|" + arr.msg);
-                                    break;
-                            }
+        //     LE.UpdateManager.isNeedUpdate(function (arr) {
+        //         switch (arr.state) {
+        //             case LE.UpdateManager.UpdateStateType.newVersion:
+        //                 LE.UpdateManager.StartUpdate(function (arr) {
+        //                     switch (arr.code) {
+        //                         case jsb.EventAssetsManager.UPDATE_PROGRESSION:
+        //                             console.log("ddd--" + arr.updateObj.byteProgress);
+        //                             break;
+        //                         case jsb.EventAssetsManager.UPDATE_FINISHED:
+        //                             cc.audioEngine.stopAll();
+        //                             cc.game.restart();
+        //                             break;
+        //                         default:
+        //                             console.log(arr.state + "|" + arr.code + "|" + arr.msg);
+        //                             break;
+        //                     }
 
-                        });
-                        break;
-                    case LE.UpdateManager.UpdateStateType.already:
-                        break;
-                    case LE.UpdateManager.UpdateStateType.checkFailed:
-                        break;
-                }
-                console.log(arr.state + "|" + arr.msg);
-            });
-        }
+        //                 });
+        //                 break;
+        //             case LE.UpdateManager.UpdateStateType.already:
+        //                 break;
+        //             case LE.UpdateManager.UpdateStateType.checkFailed:
+        //                 break;
+        //         }
+        //         console.log(arr.state + "|" + arr.msg);
+        //     });
+        // }
         // cc.log(jsb.EventAssetsManager.ERROR_NO_LOCAL_MANIFEST);
         // var searchPaths = jsb.fileUtils.getSearchPaths();
         //cc.log(searchPaths);
