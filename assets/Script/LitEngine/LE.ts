@@ -11,14 +11,14 @@ import { LAsset } from "./AssetLoad/AssetLoader";
 import { LEvent } from "./Event/EventManager";
 
 export default class LE{
-    public static AssetLoader = LAsset.AssetLoader.instance;
-    public static AudioManager = AudioManager.instance;
-    public static EventManager = LEvent.EventManager.Instance;
+    public static AssetLoader = LAsset.AssetLoader;
+    public static AudioManager = AudioManager;
+    public static EventManager = LEvent.EventManager;
     public static PlayerData = PlayerData;
     public static HttpNet = HttpNet;
     public static WebSocketNet = WebSocketNet;
     public static UpdateManager = LUpdate.UpdateManager;
-    public static NodePool = Pool.NodePool.instance;
+    public static NodePool = Pool.NodePool;
     public static DLog = Log.DLog;
     private constructor()
     {

@@ -13,14 +13,14 @@ export module LAsset{
             return AssetLoader._instance;
         }
     
-        public async LoadUrl(resources: string | string[] | { uuid?: string, url?: string, type?: string }, completeCallback: ((erro: Error, res: any) => void) | null = null) {
+        public static async LoadUrl(resources: string | string[] | { uuid?: string, url?: string, type?: string }, completeCallback: ((erro: Error, res: any) => void) | null = null) {
             if (completeCallback != null) {
-                this.GetUrlObject(resources, function (err, resobj) {
+                AssetLoader.instance.GetUrlObject(resources, function (err, resobj) {
                     completeCallback(err, resobj);
                 });
             }
             else {
-                return await this.GetUrlRes(resources);
+                return await AssetLoader.instance.GetUrlRes(resources);
             }
     
         }
@@ -45,19 +45,19 @@ export module LAsset{
             });
         }
     
-        public async LoadAssetAsync(url: string, type: typeof cc.Asset = cc.Asset, completeCallback: ((error: Error, resource: any) => void) | null = null) {
+        public static async LoadAssetAsync(url: string, type: typeof cc.Asset = cc.Asset, completeCallback: ((error: Error, resource: any) => void) | null = null) {
     
             if (completeCallback != null) {
-                this.GetAssetResObject(url, type, function (erro, resobj) {
+                AssetLoader.instance.GetAssetResObject(url, type, function (erro, resobj) {
                     if (resobj != null)
                         this.RetainAsset(url);
                     completeCallback(erro, resobj);
                 });
             }
             else {
-                var tobj = await this.GetPromiseAsync(url, type);
+                var tobj = await AssetLoader.instance.GetPromiseAsync(url, type);
                 if (tobj != null)
-                    this.RetainAsset(url);
+                    AssetLoader.instance.RetainAsset(url);
                 return tobj;
             }
         }
@@ -75,13 +75,14 @@ export module LAsset{
             }
         }
     
-        public async ReleaseAsset(owner: string) {
+        public static async ReleaseAsset(owner: string) {
+            var a = AssetLoader.instance;
             var deps = cc.loader.getDependsRecursively(owner);
             var reflist: string[] = [];
             for (var i = 0; i < deps.length; ++i) {
                 var tuuid = deps[i].toString();
-                if (this.assets.hasOwnProperty(tuuid)) {
-                    var tobj = this.assets[tuuid];
+                if (a.assets.hasOwnProperty(tuuid)) {
+                    var tobj = a.assets[tuuid];
                     tobj.Release();
                     if (tobj.assetUsedCount > 0) {
                         reflist.push(tuuid)

@@ -13,22 +13,22 @@ export module LEvent{
     
         private eventHandles: EventGroup[] = [];
     
-        public RegEvent(eventKey: string, callBack: ((target: any, args: any[]) => void)) {
-            let e = this;
+        public static RegEvent(eventKey: string, callBack: ((target: any, args: any[]) => void)) {
+            let e = EventManager.Instance;
             if (e.eventHandles[eventKey] == null){
                 e.eventHandles[eventKey] = new EventGroup(eventKey);
             } 
             e.eventHandles[eventKey].Add(callBack);
         }
     
-        public UnRegEvent(eventKey: string, callBack: ((target: any, args: any[]) => void)) {
-            let e = this;
+        public static UnRegEvent(eventKey: string, callBack: ((target: any, args: any[]) => void)) {
+            let e = EventManager.Instance;
             if (e.eventHandles[eventKey] == null) return;
             e.eventHandles[eventKey].Remove(callBack);
         }
     
-        public DispatchEvent(eventKey: string, args: any[]) {
-            let e = this;
+        public static DispatchEvent(eventKey: string, args: any[]) {
+            let e = EventManager.Instance;
             if (e.eventHandles[eventKey] == null) return;
             e.eventHandles[eventKey].DispatchEvent(args);
         }

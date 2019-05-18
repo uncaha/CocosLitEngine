@@ -77,10 +77,11 @@ export default class AudioManager extends cc.Component {
     }
 
     public set mixerAudioIndex(value) {
-        if (value >= this._mixerAudioIndex)
-            this._mixerAudioIndex = 0;
+        let a = this;
+        if (value >= a._maxAudioSource)
+            a._mixerAudioIndex = 0;
         else
-            this._mixerAudioIndex = value;
+            a._mixerAudioIndex = value;
     }
 
     public get volume() {
@@ -117,19 +118,19 @@ export default class AudioManager extends cc.Component {
         return index;
     }
 
-    public playMixerSound(clip: cc.AudioClip) {
-        var a = this;
+    public static playMixerSound(clip: cc.AudioClip) {
+        let a = AudioManager.instance;
         a.mixerAudioIndex = a.playSoundByArrays(a._mixerSources, a.mixerAudioIndex, clip);
         a._isMixerSoundPlaying = true;
     }
 
-    public playSound(clip: cc.AudioClip) {
-        var a = this;
+    public static playSound(clip: cc.AudioClip) {
+        let a = AudioManager.instance;
         a.audioIndex = a.playSoundByArrays(a._audioSources, a.audioIndex, clip);
     }
 
-    public playMusic(clip: cc.AudioClip) {
-        var a = this;
+    public static playMusic(clip: cc.AudioClip) {
+        var a = AudioManager.instance;
         a._backMusic.stop();
         a._backMusic.clip = clip;
         a._backMusic.play();

@@ -2,17 +2,9 @@ import LE from "../LE";
 
 export module Pool {
     export class NodePool {
-        private static _instance: NodePool = null;
-        private constructor() {
+        constructor() {
     
         }
-    
-        public static get instance() {
-            if (NodePool._instance == null)
-            NodePool._instance = new NodePool();
-            return NodePool._instance;
-        }
-
         private _groupList: NodeGroup[] = [];
         public async Get(pKey: string) {
             if (pKey == null || pKey.length == 0) return;

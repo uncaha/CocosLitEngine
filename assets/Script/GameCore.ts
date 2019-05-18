@@ -19,15 +19,20 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class GameCore extends cc.Component {
 
+    @property({ type: cc.Camera })
+    camera: cc.Camera = null;
     @property({ type: cc.Asset })
     mainfiest: cc.Asset = null;
-    @property({ type: cc.AudioClip })
-    audio: cc.AudioClip = null;
 
     private static _core: GameCore = null;
     private _managers: BaseManager[] = [];
 
-    private eventCall: any;
+    public _mgrUI:UIManager;
+    
+    private constructor()
+    {
+        super();
+    }
     onLoad() {
         if (GameCore._core) return;
         cc.game.addPersistRootNode(this.node);
@@ -36,7 +41,8 @@ export default class GameCore extends cc.Component {
     }
 
     async Init() {
-        this._managers["UIManager"] = new UIManager();
+        this._mgrUI = new UIManager();
+        this._managers["UIManager"] = this._mgrUI;
 
         for (let key in this._managers) {
             if (this._managers.hasOwnProperty(key)) {
@@ -46,52 +52,47 @@ export default class GameCore extends cc.Component {
         }
         await GameCore.GetMng("UIManager").ShowUI("HelloWorld");
 
-        var tar = this;
-        this.eventCall = function (args: any[]) {
-            cc.log(tar, args[0]);
-        }
-        LE.EventManager.RegEvent("GameCoreEvent", this.eventCall);
+        //var tar = this;
+
+         LE.EventManager.RegEvent("GameCoreEvent", (args: any[])=>{ cc.log(this.name, args[0]);});
         //LitEngine.EventManager.UnRegEvent("GameCoreEvent",this.eventCall); 
         
 
-        LE.AudioManager.playMusic(this.audio);
+       // LE.AudioManager.playMusic(this.audio);
 
-        // if (cc.sys.isNative) {
-        //     LE.UpdateManager.SetManifest(this.mainfiest);
+        //#region testupdate
+          /*
+        if (cc.sys.isNative) {
+            LE.UpdateManager.SetManifest(this.mainfiest);
 
-        //     LE.UpdateManager.isNeedUpdate(function (arr) {
-        //         switch (arr.state) {
-        //             case LE.UpdateManager.UpdateStateType.newVersion:
-        //                 LE.UpdateManager.StartUpdate(function (arr) {
-        //                     switch (arr.code) {
-        //                         case jsb.EventAssetsManager.UPDATE_PROGRESSION:
-        //                             console.log("ddd--" + arr.updateObj.byteProgress);
-        //                             break;
-        //                         case jsb.EventAssetsManager.UPDATE_FINISHED:
-        //                             cc.audioEngine.stopAll();
-        //                             cc.game.restart();
-        //                             break;
-        //                         default:
-        //                             console.log(arr.state + "|" + arr.code + "|" + arr.msg);
-        //                             break;
-        //                     }
+            LE.UpdateManager.isNeedUpdate(function (arr) {
+                switch (arr.state) {
+                    case LE.UpdateManager.UpdateStateType.newVersion:
+                        LE.UpdateManager.StartUpdate(function (arr) {
+                            switch (arr.code) {
+                                case jsb.EventAssetsManager.UPDATE_PROGRESSION:
+                                    console.log("ddd--" + arr.updateObj.byteProgress);
+                                    break;
+                                case jsb.EventAssetsManager.UPDATE_FINISHED:
+                                    cc.audioEngine.stopAll();
+                                    cc.game.restart();
+                                    break;
+                                default:
+                                    console.log(arr.state + "|" + arr.code + "|" + arr.msg);
+                                    break;
+                            }
 
-        //                 });
-        //                 break;
-        //             case LE.UpdateManager.UpdateStateType.already:
-        //                 break;
-        //             case LE.UpdateManager.UpdateStateType.checkFailed:
-        //                 break;
-        //         }
-        //         console.log(arr.state + "|" + arr.msg);
-        //     });
-        // }
-        // cc.log(jsb.EventAssetsManager.ERROR_NO_LOCAL_MANIFEST);
-        // var searchPaths = jsb.fileUtils.getSearchPaths();
-        //cc.log(searchPaths);
-        // var storagePath = (jsb.fileUtils ? jsb.fileUtils.getWritablePath() : "/") + "blackjack-remote-asset";
-        // cc.log("Storage path for remote asset : " + storagePath);
-        // var _am = new jsb.AssetsManager("", storagePath);
+                        });
+                        break;
+                    case LE.UpdateManager.UpdateStateType.already:
+                        break;
+                    case LE.UpdateManager.UpdateStateType.checkFailed:
+                        break;
+                }
+                console.log(arr.state + "|" + arr.msg);
+            });
+        }*/
+        //#endregion
 
     }
 
