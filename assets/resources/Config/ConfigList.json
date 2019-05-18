@@ -1,0 +1,28 @@
+{
+    "configList": [
+        {
+            "key": "SceneConfig",
+            "filePath": "Config/SceneConfig.json"
+        },
+        {
+            "key": "PlayerModelConfig",
+            "filePath": "Config/PlayerModelConfig.json"
+        },
+        {
+            "key": "CameraConfig",
+            "filePath": "Config/CameraConfig.json"
+        },
+        {
+            "key": "WayModelConfig",
+            "filePath": "Config/WayModelConfig.json"
+        },
+        {
+            "key": "MapItemConfig",
+            "filePath": "Config/MapItemConfig.json"
+        },
+        {
+            "key": "RandMapItemGroup",
+            "filePath": "Config/RandMapItemGroup.json"
+        }
+    ]
+}

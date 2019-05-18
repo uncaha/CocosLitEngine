@@ -30,7 +30,7 @@ export default class UIClose extends UIBase {
             case "1":
             break;
         }
-        LE.EventManager.DispatchEvent("GameCoreEvent",[key]);
+        LE.EventManager.DispatchEvent("GameCoreEvent",key);
     }
 
     // update (dt) {}

@@ -8,8 +8,15 @@ interface IUpdate{
 }
 
 interface IRuning{
-    Init(onComplete:Laya.Handler);
     Run();
     Pause();
     Resume();
+}
+
+interface IRest{
+    Rest();
+}
+
+interface ICustomArray<T>{
+    [index:number]:T;
 }

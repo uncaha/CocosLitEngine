@@ -1,19 +1,23 @@
 import BaseManager from "../Core/BaseManager";
 import LE from "../LitEngine/LE";
 import UIBase from "./UIBase";
+import GameCore from "../GameCore";
 export default class UIManager extends BaseManager {
+
+    public static Creat():UIManager {
+        return new UIManager("UIManager");
+    }
     private _uiFolder: string = "Prefab/";
     private _uiList: UIBase[] = [];
-    private _uiRoot: cc.Node;
     public async Init() {
         var tobj = await LE.AssetLoader.LoadAssetAsync(this._uiFolder + "RootNode");
         var toort = cc.instantiate(tobj);
-        cc.game.addPersistRootNode(toort);
-        this._uiRoot = toort;
+        GameCore.AddLayer(toort);
+        this._node = toort;
     }
 
     public get uiRoot() {
-        return this._uiRoot;
+        return this._node;
     }
 
     public CreatUI(res: any, uiName: string): UIBase {
@@ -53,6 +57,7 @@ export default class UIManager extends BaseManager {
         LE.AssetLoader.ReleaseAsset(this._uiFolder + uiName);
     }
 
-    public UpdateManager(dt: number) {
+    public Update(dt: number) {
+        
     }
 }
