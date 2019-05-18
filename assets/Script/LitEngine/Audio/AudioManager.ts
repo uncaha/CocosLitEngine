@@ -88,11 +88,11 @@ export default class AudioManager extends cc.Component {
     }
 
     public set volume(value) {
-        this._volume = value > 1 ? 1 : value;
-
-        this._backMusic.volume = this._volume * this._curVolume;
-        this.setNormalVolume(this._audioSources, this._volume * this._curVolume);
-        this.setNormalVolume(this._mixerSources, this._volume);
+        let a = this;
+        a._volume = value > 1 ? 1 : value;
+        a._backMusic.volume = a._volume * a._curVolume;
+        a.setNormalVolume(a._audioSources, a._volume * a._curVolume);
+        a.setNormalVolume(a._mixerSources, a._volume);
     }
 
     public get onMixerVolume() {
@@ -117,30 +117,30 @@ export default class AudioManager extends cc.Component {
         return index;
     }
 
-    public static playMixerSound(clip: cc.AudioClip) {
-        var admgr = AudioManager.instance;
-        admgr.mixerAudioIndex = admgr.playSoundByArrays(admgr._mixerSources, admgr.mixerAudioIndex, clip);
-        admgr._isMixerSoundPlaying = true;
+    public playMixerSound(clip: cc.AudioClip) {
+        var a = this;
+        a.mixerAudioIndex = a.playSoundByArrays(a._mixerSources, a.mixerAudioIndex, clip);
+        a._isMixerSoundPlaying = true;
     }
 
-    public static playSound(clip: cc.AudioClip) {
-        var admgr = AudioManager.instance;
-        admgr.audioIndex = admgr.playSoundByArrays(admgr._audioSources, admgr.audioIndex, clip);
+    public playSound(clip: cc.AudioClip) {
+        var a = this;
+        a.audioIndex = a.playSoundByArrays(a._audioSources, a.audioIndex, clip);
     }
 
-    public static playMusic(clip: cc.AudioClip) {
-        var admgr = AudioManager.instance;
-        admgr._backMusic.stop();
-        admgr._backMusic.clip = clip;
-        admgr._backMusic.play();
+    public playMusic(clip: cc.AudioClip) {
+        var a = this;
+        a._backMusic.stop();
+        a._backMusic.clip = clip;
+        a._backMusic.play();
     }
 
     update(dt) {
-
+        var a = this;
         let tisplayin = false;
-        if (this._isMixerSoundPlaying) {
-            let tmaxCount = this._maxAudioSource;
-            let tmixeraudios = this._mixerSources;
+        if (a._isMixerSoundPlaying) {
+            let tmaxCount = a._maxAudioSource;
+            let tmixeraudios = a._mixerSources;
 
             for (let i = 0; i < tmaxCount; i++) {
                 let vsce = tmixeraudios[i];
@@ -150,28 +150,28 @@ export default class AudioManager extends cc.Component {
             }
         }
 
-        let tcurvolume = this._curVolume;
-        let tmixmolume = this._onMixerVolume;
+        let tcurvolume = a._curVolume;
+        let tmixmolume = a._onMixerVolume;
         if (tisplayin) {
             if (tcurvolume > tmixmolume) {
                 tcurvolume -= dt;
-                this._curVolume = tcurvolume < tmixmolume ? tmixmolume : tcurvolume;
-                let tvol = this._volume * tcurvolume;
-                this.setNormalVolume(this._audioSources, tvol);
-                this._backMusic.volume = tvol;
+                a._curVolume = tcurvolume < tmixmolume ? tmixmolume : tcurvolume;
+                let tvol = a._volume * tcurvolume;
+                a.setNormalVolume(a._audioSources, tvol);
+                a._backMusic.volume = tvol;
             }
 
         }
         else {
             if (tcurvolume < 1) {
                 tcurvolume += dt;
-                this._curVolume = tcurvolume > 1 ? 1 : tcurvolume;
-                let tvol = this._volume * tcurvolume;
-                this.setNormalVolume(this._audioSources, tvol);
-                this._backMusic.volume = tvol;
+                a._curVolume = tcurvolume > 1 ? 1 : tcurvolume;
+                let tvol = a._volume * tcurvolume;
+                a.setNormalVolume(a._audioSources, tvol);
+                a._backMusic.volume = tvol;
 
-                if (this._curVolume == 1) {
-                    this._isMixerSoundPlaying = false;
+                if (a._curVolume == 1) {
+                    a._isMixerSoundPlaying = false;
                 }
             }
 

@@ -1,4 +1,5 @@
-import AudioManager from "../LitEngine/Audio/AudioManager";
+import LE from "../LitEngine/LE";
+
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -33,7 +34,7 @@ export default class UIBase extends cc.Component {
     public play(event:any,index:number)
     {
         if(index >= this.audios.length) return;
-        AudioManager.playMixerSound(this.audios[index]);
+        LE.AudioManager.playMixerSound(this.audios[index]);
     }
 
     // update (dt) {}

@@ -24,25 +24,11 @@ export default class UIManager extends BaseManager {
         return this._uiList[uiName];
     }
 
-    public async ShowUI(uiName: string, type: typeof cc.Asset = cc.Asset, completeCallback: (uiComp: UIBase) => void | null = null) {
+    public async ShowUI(uiName: string, type: typeof cc.Asset = cc.Asset) {
         if (this._uiList[uiName] == null) {
-            if (completeCallback != null) {
-                var uim = this;
-                var assetName = this._uiFolder + uiName;
-                LE.AssetLoader.LoadAssetAsync(assetName, type, function (erro, resource) {
-                    if(erro == null)
-                    {
-                        var tui = uim.CreatUI(resource, assetName);
-                        if (completeCallback != null)
-                            completeCallback(tui);
-                    } 
-                }
-                );
-            }
-            else {
-                var tobj = await LE.AssetLoader.LoadAssetAsync(this._uiFolder + uiName);
-                this.CreatUI(tobj, uiName);
-            }
+            var assetName = this._uiFolder + uiName;
+            var tobj = await LE.AssetLoader.LoadAssetAsync(assetName,type);
+            this.CreatUI(tobj, uiName);
         }
         else {
             this._uiList[uiName].node.active = true;
