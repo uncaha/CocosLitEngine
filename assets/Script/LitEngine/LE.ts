@@ -11,7 +11,7 @@ import { LAsset } from "./AssetLoad/AssetLoader";
 import { LEvent } from "./Event/EventManager";
 
 export default class LE{
-    public static AssetLoader = LAsset.AssetLoader;
+    public static AssetLoader = new LAsset.AssetLoader();
     public static AudioManager = AudioManager;
     public static EventManager = LEvent.EventManager;
     public static PlayerData = PlayerData;

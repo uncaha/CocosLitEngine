@@ -1,4 +1,5 @@
 import BaseManager from "../Core/BaseManager";
+import LE from "../LitEngine/LE";
 
 
 export default class ConfigManager extends BaseManager {
@@ -7,43 +8,24 @@ export default class ConfigManager extends BaseManager {
         return new ConfigManager("ConfigManager");
     }
 
-    private _loadCall: any;
-
-    private _configList: any[] = [];
-    private _cfgListObj: any;
+    private configList: any[] = [];
 
     public async Init()
     {
+        let p = this;
+        let tcfg = await LE.AssetLoader.LoadAssetAsync("Config/ConfigList.json",cc.Asset,false);
 
-    }
-
-    protected OnListLoaded(pListobj)  {
-        // this._cfgListObj = pListobj;
-        // var assets: string[] = [];
-        // var tlist = this._cfgListObj.configList;
-        // for (let index = 0; index < tlist.length; index++) {
-        //     assets.push(tlist[index].filePath);
-        // }
-        // Laya.loader.create(assets, Laya.Handler.create(this, this.OnCfgLoaded));
-    }
-
-    protected OnCfgLoaded()  {
-        // let tcfglist = this._configList;
-        // let tlist = this._cfgListObj.configList;
-        // for (let index = 0; index < tlist.length; index++) {
-        //     const elment = tlist[index];
-        //     let tcfg = Laya.Loader.getRes(elment.filePath);
-        //     tcfglist[elment.key] = tcfg;
-        // }
-
-        // if (this._loadCall != null)
-        //     this._loadCall.run();
-
+        var tlist = tcfg.json.configList;
+        for (let i = 0; i < tlist.length; i++) {
+            let e = tlist[i];
+            let obj = await LE.AssetLoader.LoadAssetAsync(e.filePath,cc.JsonAsset,false);
+            p.configList[e.key,obj.json];
+        }
     }
 
     public GetConfig(key:string)
     {
-        let tcfglist = this._configList;
+        let tcfglist = this.configList;
         if(tcfglist[key] == null)
         {
             console.error("Cant not found config.key = " + key);

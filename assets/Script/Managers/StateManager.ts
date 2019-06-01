@@ -4,7 +4,7 @@ import { State } from "../State/StateBase";
 
 export default class StateManager extends BaseManager {
     public static Creat(): StateManager {
-        return new StateManager(null);
+        return new StateManager("StateManager");
     }
 
     private _curState: State.StateBase;

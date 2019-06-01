@@ -15,7 +15,10 @@ export module Pool {
             }
 
             if (ret == null) {
-                ret = await LE.AssetLoader.LoadAssetAsync(pKey);
+                let res = await LE.AssetLoader.LoadAssetAsync(pKey);
+                let tnode: cc.Node = cc.instantiate(res);
+                tnode.name = pKey;
+                ret = tnode;
             }
             return ret;
         }
@@ -69,7 +72,9 @@ export module Pool {
             for (let i = 0; i < tlist.length; i++) {
                 let e = tlist[i];
                 tlist[i] = null;
+                let tname = e.name;
                 e.destroy();
+                LE.AssetLoader.ReleaseAsset(tname);
             }
             tlist = null;
         }

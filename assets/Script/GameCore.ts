@@ -5,6 +5,7 @@ import LE from "./LitEngine/LE";
 import ConfigManager from "./Managers/ConfigManager";
 import StateManager from "./Managers/StateManager";
 import MainState from "./State/MainState";
+import EffectManager from "./Managers/EffectManager";
 
 
 // Learn TypeScript:
@@ -34,24 +35,21 @@ export default class GameCore extends cc.Component {
     static openTryCache = false;
     //#endregion
     private _dataUpdateTimer = 0;
-    private _managers: BaseManager[] = [];
+    private managers: BaseManager[] = [];
+    private updateList: BaseManager[] = [];
     //#region mgrs
-    private _mgrUI: UIManager;
     public static get mgrUI(): UIManager {
-        return GameCore._core._mgrUI;
+        return GameCore._core.managers["UIManager"];
     }
 
-    private _mgrConfig: ConfigManager;
     public static get mgrConfig(): ConfigManager {
-        return GameCore._core._mgrConfig;
+        return GameCore._core.managers["ConfigManager"];
     }
 
-    private _mgrState: StateManager;
     public static get mgrState(): StateManager {
-        return GameCore._core._mgrState;
+        return GameCore._core.managers["StateManager"];
     }
     //#endregion
-
 
     private _sceneLayer: cc.Node;
 
@@ -69,17 +67,18 @@ export default class GameCore extends cc.Component {
 
     async Init() {
         let g = this;
-        g._mgrUI = UIManager.Creat();
-        g._mgrConfig = ConfigManager.Creat();
-        g._mgrState = StateManager.Creat();
-        g._managers.push(g._mgrUI);
-        g._managers.push(g._mgrState);
-        for (let i = 0; i < g._managers.length; i++) {
-            const e = g._managers[i];
-            await e.Init();
+        g.AddMgr(ConfigManager.Creat(),false);
+        g.AddMgr(UIManager.Creat());
+        g.AddMgr(StateManager.Creat());
+        g.AddMgr(EffectManager.Creat());
+        for (const key in g.managers) {
+            if (g.managers.hasOwnProperty(key)) {
+                const e = g.managers[key];
+                e.Init();
+            }
         }
 
-        await g._mgrState.GotoState(new MainState());
+        await GameCore.mgrState.GotoState(new MainState());
 
         //var tar = this;
         // let test =  LE.EventManager.RegEvent("GameCoreEvent", (...args)=>{this.testtt(args);});
@@ -124,6 +123,15 @@ export default class GameCore extends cc.Component {
 
     }
 
+    private AddMgr(pMgr:BaseManager,pUpdate:boolean = true)
+    {
+        let g = this;
+        g.managers[pMgr.managerName] = pMgr;
+        if(pUpdate){
+            g.updateList.push(pMgr);
+        }
+    }
+
     update(dt) {
         let g = this;
 
@@ -136,8 +144,8 @@ export default class GameCore extends cc.Component {
             g._dataUpdateTimer = ttimer;
         }
 
-        for (let i = 0; i < g._managers.length; i++) {
-            const e = g._managers[i];
+        for (let i = 0; i < g.updateList.length; i++) {
+            const e = g.updateList[i];
             if (topentry) {
                 try {
                     g.UpdateElement(e, dt, tisUpdateData);
