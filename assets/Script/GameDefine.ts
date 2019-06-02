@@ -8,7 +8,8 @@ export module GameDefine{
     export enum ModuleEvent
     {
         none = 0,
-        goNextGroup,
-        pathEnd,
+        Run,
+        Pause,
+        Resume,
     }
 }

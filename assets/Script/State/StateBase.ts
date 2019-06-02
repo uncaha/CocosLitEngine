@@ -8,37 +8,37 @@ export module State{
     }
     export abstract class StateBase implements IUpdate {
         public readonly name: string;
-        protected _state: StateType = StateType.none;
-        protected _module : GameModuleBase;
+        protected state: StateType = StateType.none;
+        protected module : GameModuleBase;
         public get State()  {
-            return this._state;
+            return this.state;
         }
         constructor(nstr: string) {
             this.name = nstr;
         }
         public async OnEnter(pData?:any) {
-            this._state = StateType.onEnter;
+            this.state = StateType.onEnter;
         }
     
         public OnExit() {
-            var tmodule = this._module;
+            var tmodule = this.module;
             if (tmodule != null)
                 tmodule.Destroy();
-            this._state = StateType.onExit;
+            this.state = StateType.onExit;
         }
     
         protected OnLoaded() {
-            this._state = StateType.Loaded;
+            this.state = StateType.Loaded;
         }
     
         public Update(dt: number) {
-            var tmodule = this._module;
+            var tmodule = this.module;
             if(tmodule != null)
                 tmodule.Update(dt);
         }
     
         public UpdateData() {
-            var tmodule = this._module;
+            var tmodule = this.module;
             if(tmodule != null)
                 tmodule.UpdateData();
         }

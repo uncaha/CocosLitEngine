@@ -1,5 +1,5 @@
 import { State } from "./StateBase";
-import GameCore from "../GameCore";
+import { GameModule } from "../Module/GameModule";
 
 export default class MainState extends State.StateBase {
     constructor() {
@@ -7,7 +7,9 @@ export default class MainState extends State.StateBase {
     }
     public async OnEnter(pData?:any) {
         super.OnEnter(pData);
-        await GameCore.mgrUI.ShowUI("HelloWorld");
+        var tmd = new GameModule.MainModule();
+        this.module = tmd;
+        await tmd.Init();
     }
 
     public OnExit() {

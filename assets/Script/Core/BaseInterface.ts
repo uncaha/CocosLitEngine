@@ -2,6 +2,10 @@ interface IDispose{
     Destroy();
 }
 
+interface IInit{
+    Init();
+}
+
 interface IUpdate{
     Update(dt:number);
     UpdateData();

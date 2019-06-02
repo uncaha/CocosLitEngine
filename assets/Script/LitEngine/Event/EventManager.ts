@@ -1,4 +1,8 @@
 export module LEvent{
+    export class EventObject{
+        public type:number;
+        public data:any;
+    }
     export class EventManager {
         private static _instance: EventManager = null;
         public static get Instance() {
@@ -12,8 +16,7 @@ export module LEvent{
         }
     
         private eventHandles: EventGroup[] = [];
-    
-        public static RegEvent(eventKey: string, callBack: ((...args: any[]) => void)) {
+        public static RegEvent(eventKey: string, callBack: ((arg:EventObject) => void)) {
             let e = EventManager.Instance;
             if (e.eventHandles[eventKey] == null){
                 e.eventHandles[eventKey] = new EventGroup(eventKey);
@@ -22,16 +25,16 @@ export module LEvent{
             return callBack;
         }
     
-        public static UnRegEvent(eventKey: string, callBack: ((...args: any[]) => void)) {
+        public static UnRegEvent(eventKey: string, callBack: ((arg:EventObject) => void)) {
             let e = EventManager.Instance;
             if (e.eventHandles[eventKey] == null) return;
             e.eventHandles[eventKey].Remove(callBack);
         }
     
-        public static DispatchEvent(eventKey: string, ...args: any[]) {
+        public static DispatchEvent(eventKey: string, arg:EventObject) {
             let e = EventManager.Instance;
             if (e.eventHandles[eventKey] == null) return;
-            e.eventHandles[eventKey].DispatchEvent(args);
+            e.eventHandles[eventKey].DispatchEvent(arg);
         }
     }
     
@@ -42,22 +45,22 @@ export module LEvent{
             this.EventKey = key;
         }
     
-        public Add(callBack: ((...args: any[]) => void)) {
+        public Add(callBack:((arg:EventObject) => void)) {
             let tindex = this._calls.indexOf(callBack);
             if (tindex !== -1) return;
             this._calls.push(callBack);
         }
     
-        public Remove(callBack: ((...args: any[]) => void)) {
+        public Remove(callBack:((arg:EventObject) => void)) {
             let tindex = this._calls.indexOf(callBack);
             if (tindex !== -1)
                 this._calls.splice(tindex, 1);
         }
     
-        public DispatchEvent(...args: any[]) {
+        public DispatchEvent(arg:EventObject) {
             for (let i = 0; i < this._calls.length; i++) {
                 let element = this._calls[i];
-                element(args);
+                element(arg);
             }
         }
     }
