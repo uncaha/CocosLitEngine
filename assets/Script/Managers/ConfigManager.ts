@@ -23,18 +23,15 @@ export module Config{
     
         public async Init()
         {
-            // let p = this;
-            // let tcfg = await LE.AssetLoader.LoadAssetAsync("Config/ConfigList",cc.JsonAsset,false);
-    
-            // var tlist = tcfg.json.configList;
-            // for (let i = 0; i < tlist.length; i++) {
-            //     let e = tlist[i];
-            //     let obj = await LE.AssetLoader.LoadAssetAsync(e.filePath,cc.JsonAsset,false);
-            //     p.configList[e.key,obj.json];
-            // }
-            
             let p = this;
-            p["ItemConfig"] = new ItemConfig();
+            let tcfg = await LE.AssetLoader.LoadAssetAsync("Config/ConfigList",cc.JsonAsset,false);
+    
+            var tlist = tcfg.json.configList;
+            for (let i = 0; i < tlist.length; i++) {
+                let e = tlist[i];
+                let obj = await LE.AssetLoader.LoadAssetAsync(e.filePath,cc.JsonAsset,false);
+                p.configList[e.key,obj.json];
+            }
         }
     
         public GetConfig(key:string)

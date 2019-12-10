@@ -1,4 +1,4 @@
-import LE from "../LE";
+import LE from "./LE";
 
 export module Pool {
     export class NodePool {

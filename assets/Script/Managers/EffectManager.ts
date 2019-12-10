@@ -1,5 +1,5 @@
 
-import { Pool } from "../LitEngine/Pool/NodePool";
+import { Pool } from "../LitEngine/NodePool";
 import BaseManager from "../Core/BaseManager";
 import GameCore from "../GameCore";
 import LE from "../LitEngine/LE";

@@ -1,19 +1,19 @@
 
-import AudioManager from "./Audio/AudioManager";
+import AudioManager from "./AudioManager";
 
-import PlayerData from "./Data/PlayerData";
-import HttpNet from "./Net/HttpNet";
-import WebSocketNet from "./Net/WebSocketNet";
-import { Pool } from "./Pool/NodePool";
-import { Log } from "./Tool/Dlog";
-import { LUpdate } from "./Update/UpdateManager";
-import { LAsset } from "./AssetLoad/AssetLoader";
-import { LEvent } from "./Event/EventManager";
+import PlayerData from "./PlayerData";
+import HttpNet from "./HttpNet";
+import WebSocketNet from "./WebSocketNet";
+import { Pool } from "./NodePool";
+import { Log } from "./DLog";
+import { LUpdate } from "./UpdateManager";
+import { Asset } from "./AssetLoader";
+import { Event } from "./EventManager";
 
 export default class LE{
-    public static AssetLoader = new LAsset.AssetLoader();
+    public static AssetLoader = new Asset.AssetLoader();
     public static AudioManager = AudioManager;
-    public static EventManager = LEvent.EventManager;
+    public static EventManager = Event.EventManager;
     public static PlayerData = PlayerData;
     public static HttpNet = HttpNet;
     public static WebSocketNet = WebSocketNet;

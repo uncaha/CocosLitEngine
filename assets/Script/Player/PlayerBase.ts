@@ -1,4 +1,4 @@
-import PlayerData from "../LitEngine/Data/PlayerData";
+import PlayerData from "../LitEngine/PlayerData";
 
 export default class PlayerBase{
     protected _key:string;

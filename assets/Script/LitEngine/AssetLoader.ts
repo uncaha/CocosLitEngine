@@ -1,4 +1,4 @@
-export module LAsset {
+export module Asset {
     export class AssetLoader {
         private assets: AssetObject[] = [];
         public constructor() {
