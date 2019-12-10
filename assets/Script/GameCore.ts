@@ -2,7 +2,7 @@ import UIManager from "./UI/UIManager";
 import BaseManager from "./Core/BaseManager";
 
 import LE from "./LitEngine/LE";
-import ConfigManager from "./Managers/ConfigManager";
+import {Config} from "./Managers/ConfigManager";
 import StateManager from "./Managers/StateManager";
 import MainState from "./State/MainState";
 import EffectManager from "./Managers/EffectManager";
@@ -42,7 +42,7 @@ export default class GameCore extends cc.Component {
         return GameCore._core.managers["UIManager"];
     }
 
-    public static get mgrConfig(): ConfigManager {
+    public static get mgrConfig(): Config.ConfigManager {
         return GameCore._core.managers["ConfigManager"];
     }
 
@@ -67,7 +67,7 @@ export default class GameCore extends cc.Component {
 
     async Init() {
         let g = this;
-        g.AddMgr(ConfigManager.Creat(),false);
+        g.AddMgr(Config.ConfigManager.Creat(),false);
         g.AddMgr(UIManager.Creat());
         g.AddMgr(StateManager.Creat());
         g.AddMgr(EffectManager.Creat());

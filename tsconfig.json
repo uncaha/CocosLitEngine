@@ -4,9 +4,7 @@
     "lib": [ "dom", "es5", "es2015.promise" ],
     "target": "es5",
     "experimentalDecorators": true,
-    "skipLibCheck": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "skipLibCheck": true
   },
   "exclude": [
     "node_modules",

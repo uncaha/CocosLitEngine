@@ -2,7 +2,7 @@
     "configList": [
         {
             "key": "ItemConfig",
-            "filePath": "Config/ItemConfig.json"
+            "filePath": "Config/ItemConfig"
         }
     ]
 }
