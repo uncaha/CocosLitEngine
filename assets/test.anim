@@ -33,18 +33,35 @@
   },
   "events": [
     {
+      "frame": 0.5833333333333334,
+      "func": "4",
+      "params": [
+        "e1"
+      ]
+    },
+    {
       "frame": 1,
-      "func": "TestEvent",
+      "func": "1",
       "params": [
         "key关键字"
       ]
     },
     {
+      "frame": 1.4333333333333333,
+      "func": "3",
+      "params": []
+    },
+    {
       "frame": 2.5083333333333333,
-      "func": "TestEvent",
+      "func": "2",
       "params": [
         "123"
       ]
+    },
+    {
+      "frame": 10,
+      "func": "",
+      "params": []
     }
   ]
 }
