@@ -8,12 +8,27 @@ export module NodeSpace {
         playing,
         stop,
     }
+    @ccclass("NodeEventGroup")
+    export class NodeEventGroup
+    {
+        @property()
+        key:string = "";
+        @property({ type: [cc.Component.EventHandler] })
+        handlers: cc.Component.EventHandler[] = [];
+        public Call()
+        {
+            let p = this;
+            p.handlers.forEach(e => {
+                e.emit([e.customEventData]);
+            });
+        }
+    }
 
     @ccclass
     export abstract class NodeBase extends cc.Component {
 
-        @property({ type: [cc.Component.EventHandler] })
-        events: cc.Component.EventHandler[] = [];
+        @property([NodeEventGroup])
+        events : NodeEventGroup[] = [];
 
         @property()
         autoPlay: boolean = false;
@@ -87,7 +102,7 @@ export module NodeSpace {
     
     export class NodeEvent {
         protected _time: number;
-        protected _event: cc.Component.EventHandler;
+        protected _events: NodeEventGroup;
         protected _called: boolean;
         protected _customDatas: string[];
 
@@ -95,15 +110,15 @@ export module NodeSpace {
             return this._time;
         }
         public get Event() {
-            return this._event;
+            return this._events;
         }
         public get Called() {
             return this._called;
         }
 
-        constructor(pHandle: cc.Component.EventHandler, pAniData: { frame: number, func: string, params: string[] }) {
+        constructor(pHandle: NodeEventGroup, pAniData: { frame: number, func: string, params: string[] }) {
             let p = this;
-            p._event = pHandle;
+            p._events = pHandle;
             p._customDatas = pAniData.params;
             p._called = false;
             p._time = pAniData.frame ;
@@ -118,7 +133,7 @@ export module NodeSpace {
             let p = this;
             if (p._called) return;
             p._called = true;
-            p._event.emit([p._event.customEventData]);
+            p._events.Call();
         }
     }
 
