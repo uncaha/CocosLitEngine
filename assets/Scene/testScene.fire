@@ -81,16 +81,16 @@
         "__id__": 5
       },
       {
-        "__id__": 10
+        "__id__": 11
       },
       {
-        "__id__": 12
+        "__id__": 13
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 15
+        "__id__": 16
       }
     ],
     "_prefab": null,
@@ -180,7 +180,7 @@
       "array": [
         0,
         0,
-        534.337646484375,
+        361.1325988769531,
         0,
         0,
         0,
@@ -256,6 +256,9 @@
       },
       {
         "__id__": 8
+      },
+      {
+        "__id__": 10
       }
     ],
     "_prefab": null,
@@ -281,8 +284,8 @@
       "__type__": "TypedArray",
       "ctor": "Float32Array",
       "array": [
-        0,
-        376,
+        -1040.1009521484375,
+        1030.89501953125,
         0,
         0,
         0,
@@ -368,6 +371,18 @@
     "handlers": []
   },
   {
+    "__type__": "8ccd92Sgw1HLKmwpY6Ja+uN",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 5
+    },
+    "_enabled": true,
+    "events": [],
+    "autoPlay": false,
+    "_id": "e2ylfDYoVOK4sYaATAKkqA"
+  },
+  {
     "__type__": "cc.Node",
     "_name": "New Particle",
     "_objFlags": 0,
@@ -378,7 +393,7 @@
     "_active": false,
     "_components": [
       {
-        "__id__": 11
+        "__id__": 12
       }
     ],
     "_prefab": null,
@@ -434,7 +449,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 10
+      "__id__": 11
     },
     "_enabled": true,
     "_materials": [
@@ -545,10 +560,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 13
+        "__id__": 14
       },
       {
-        "__id__": 14
+        "__id__": 15
       }
     ],
     "_prefab": null,
@@ -574,8 +589,8 @@
       "__type__": "TypedArray",
       "ctor": "Float32Array",
       "array": [
-        0,
-        0,
+        -1669.886962890625,
+        763.0120239257812,
         0,
         0,
         0,
@@ -604,7 +619,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 12
+      "__id__": 13
     },
     "_enabled": true,
     "_materials": [
@@ -636,7 +651,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 12
+      "__id__": 13
     },
     "_enabled": true,
     "_defaultClip": {

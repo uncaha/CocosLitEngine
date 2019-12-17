@@ -1,5 +1,5 @@
 
-const { ccclass, property } = cc._decorator;
+const { ccclass, property,inspector } = cc._decorator;
 export module NodeSpace {
     export enum NodeState
     {
@@ -25,8 +25,8 @@ export module NodeSpace {
     }
 
     @ccclass
+    @inspector("packages://leveltool/nodebase.js")
     export abstract class NodeBase extends cc.Component {
-
         @property([NodeEventGroup])
         events : NodeEventGroup[] = [];
 
