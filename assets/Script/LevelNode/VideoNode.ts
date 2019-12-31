@@ -6,8 +6,8 @@ export default class VideoNode extends NodeSpace.NodeBase {
 
      vPlayer: cc.VideoPlayer;
      vPlayerStartTIme : number;
-     aniData: cc.Animation;
-     eventList: NodeSpace.NodeEvent[] = [];
+     
+   //  eventList: NodeSpace.NodeEvent[] = [];
 
      videoReady : boolean = false;
      waitToPlay : boolean = false;
@@ -17,15 +17,15 @@ export default class VideoNode extends NodeSpace.NodeBase {
           let p = this;
           p.vPlayer = p.node.getComponent(cc.VideoPlayer);
           p.vPlayerStartTIme = p.vPlayer.currentTime;
-          p.aniData = p.node.getComponent(cc.Animation);
-          let tcount = p.aniData.defaultClip.events.length;
-          let tdatalist = p.aniData.defaultClip.events;
-          let thandles = p.events;
-          for (let i = 0; i < tcount; i++) {
-               if (i >= thandles.length) continue;
-               const e = tdatalist[i];
-               p.eventList.push(new NodeSpace.NodeEvent(thandles[i], e));
-          }
+          //p.aniData = p.node.getComponent(cc.Animation);
+          //let tcount = p.aniData.defaultClip.events.length;
+          //let tdatalist = p.aniData.defaultClip.events;
+          // let thandles = p.events;
+          // for (let i = 0; i < tcount; i++) {
+          //      if (i >= thandles.length) continue;
+          //      const e = tdatalist[i];
+          //      p.eventList.push(new NodeSpace.NodeEvent(thandles[i], e));
+          // }
 
           var videoPlayerEventHandler = new cc.Component.EventHandler();
           videoPlayerEventHandler.target = p.node;
@@ -46,18 +46,18 @@ export default class VideoNode extends NodeSpace.NodeBase {
           }
 
      }
-     public Stop() {
+     public Pause() {
           let p = this;
           p.vPlayer.pause();
-          super.Stop();
+          super.Pause();
      }
      public Resume() {
           let p = this;
-          let tlist = p.eventList;
-          for (let i = 0; i < tlist.length; i++) {
-               const e = tlist[i];
-               e.Rest();
-          }
+          // let tlist = p.eventList;
+          // for (let i = 0; i < tlist.length; i++) {
+          //      const e = tlist[i];
+          //      e.Rest();
+          // }
           p.vPlayer.currentTime = p.vPlayerStartTIme;
           p.vPlayer.stop();
           
@@ -75,7 +75,7 @@ export default class VideoNode extends NodeSpace.NodeBase {
                          p.Play();
                     }else if(p.IsPlaying)
                     {
-                         p.Stop();
+                         p.Pause();
                     }
                     break;
                case cc.VideoPlayer.EventType.PLAYING:
@@ -105,24 +105,16 @@ export default class VideoNode extends NodeSpace.NodeBase {
      }
 
      OnPlaying(dt) {
-          let p = this;
-          let teventList = p.eventList;
-          for (let i = 0; i < teventList.length; i++) {
-               const e = teventList[i];
-               if(e.Called) continue;
-               if(p.vPlayer.currentTime >= e.Time)
-               {
-                    e.Call();
-               }
-          }
-     }
-
-     OnComplete() {
-          this.Stop();
-          cc.log("Video complete");
-     }
-     OnStart() {
-
+          // let p = this;
+          // let teventList = p.eventList;
+          // for (let i = 0; i < teventList.length; i++) {
+          //      const e = teventList[i];
+          //      if(e.Called) continue;
+          //      if(p.vPlayer.currentTime >= e.Time)
+          //      {
+          //           e.Call();
+          //      }
+          // }
      }
 
      EventCall(pEvent,pData,pD2)

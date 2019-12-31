@@ -6,7 +6,7 @@ export module NodeSpace {
         none = 0,
         normal,
         playing,
-        stop,
+        pause,
     }
     @ccclass("NodeEventGroup")
     export class NodeEventGroup
@@ -27,14 +27,27 @@ export module NodeSpace {
     @ccclass
     @inspector("packages://leveltool/nodebase.js")
     export abstract class NodeBase extends cc.Component {
-        @property([NodeEventGroup])
-        events : NodeEventGroup[] = [];
+        @property(NodeEventGroup)
+        onStart : NodeEventGroup = new NodeEventGroup();
+
+        @property(NodeEventGroup)
+        onPause : NodeEventGroup = new NodeEventGroup();
+
+        @property(NodeEventGroup)
+        onComplete : NodeEventGroup = new NodeEventGroup();
+
+        @property(NodeEventGroup)
+        onResume : NodeEventGroup = new NodeEventGroup();
 
         @property()
         autoPlay: boolean = false;
 
+        @property()
+        defaultAnimation: string = "";
+
         childNode: NodeBase[] = [];
 
+        aniData: cc.Animation;
         isInited: boolean;
         state : NodeState = NodeState.normal;
         public get State():NodeState
@@ -62,6 +75,8 @@ export module NodeSpace {
                 tcomp.Init();
                 p.childNode.push(tcomp);
             });
+
+            p.aniData = p.node.getComponent(cc.Animation);
         }
 
         public InitNode() {
@@ -73,15 +88,26 @@ export module NodeSpace {
         public Play() {
             let p = this;
             p.state = NodeState.playing;
+            if (p.aniData) {
+                if (p.defaultAnimation.length > 0) {
+                    p.aniData.play(p.defaultAnimation);
+                } else {
+                    p.aniData.play();
+                }
+            }
+
             p.OnStart();
         }
-        public Stop() {
+        public Pause()
+        {
             let p = this;
-            p.state = NodeState.stop;
+            p.state = NodeState.pause;
+            p.OnPause();
         }
         public Resume() {
             let p = this;
             p.state = NodeState.normal;
+            p.OnResume();
             p.Play();
         }
 
@@ -96,8 +122,26 @@ export module NodeSpace {
         public abstract UpdateLogic(dt);
 
         abstract OnPlaying(dt);
-        abstract OnComplete();
-        abstract OnStart();
+        OnComplete() {
+            let p = this;
+            if (p.onComplete)
+                p.onComplete.Call();
+        }
+        OnStart() {
+            let p = this;
+            if (p.onStart)
+                p.onStart.Call();
+        }
+        OnPause() {
+            let p = this;
+            if (p.onPause)
+                p.onPause.Call();
+        }
+        OnResume() {
+            let p = this;
+            if (p.onResume)
+                p.onResume.Call();
+        }
     }
     
     export class NodeEvent {
