@@ -227,6 +227,7 @@
       "height": 1
     },
     "_renderStages": 1,
+    "_alignWithScreen": true,
     "_id": "1bmaDyWF9OMIRTNtfw60Nj"
   },
   {
@@ -286,6 +287,7 @@
     "_isAbsHorizontalCenter": true,
     "_isAbsVerticalCenter": true,
     "_originalWidth": 0,
-    "_originalHeight": 0
+    "_originalHeight": 0,
+    "_id": "71pRaZ8QNMQopcOIWZKmBn"
   }
 ]
